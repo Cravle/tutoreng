@@ -7,7 +7,8 @@
     "build": "yarn generate",
     "migrate": "yarn prisma migrate",
     "generate": "yarn prisma generate",
-    "studio": "yarn prisma studio"
+    "studio": "yarn prisma studio",
+    "migrate:run": "npx prisma migrate dev"
   },
   "keywords": [],
   "author": "",

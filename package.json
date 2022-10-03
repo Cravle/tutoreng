@@ -9,7 +9,10 @@
   ],
   "scripts": {
     "ui": "yarn workspace @tutoreng/ui run dev",
-    "api": "yarn workspace @tutoreng/api run start"
+    "api": "yarn workspace @tutoreng/api run start",
+    "db:build": "yarn workspace @tutoreng/db run build",
+    "db:migrate": "yarn workspace @tutoreng/db run migrate:run",
+    "postinstall": "yarn db:build && yarn db:migrate"
   },
   "devDependencies": {
     "prettier": "^2.7.1",
