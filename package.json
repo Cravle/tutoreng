@@ -12,7 +12,7 @@
     "api": "yarn workspace @tutoreng/api run start",
     "db:build": "yarn workspace @tutoreng/db run build",
     "db:migrate": "yarn workspace @tutoreng/db run migrate:run",
-    "postinstall": "yarn db:build && yarn db:migrate"
+    "postinstall": "yarn db:migrate && yarn db:build "
   },
   "devDependencies": {
     "prettier": "^2.7.1",
