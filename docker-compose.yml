@@ -10,11 +10,3 @@ services:
       POSTGRES_USER: tutoreng
       POSTGRES_PASSWORD: tutoreng-pass
       POSTGRES_DB: tutorneg
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: test@tutoreng.io
-      PGADMIN_DEFAULT_PASSWORD: root
-    ports:
-      - '5050:80'

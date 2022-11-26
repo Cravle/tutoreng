@@ -2,5 +2,9 @@
   "name": "@tutoreng/shared",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@tutoreng/db": "1.0.0",
+    "yup": "^0.32.11"
+  }
 }
