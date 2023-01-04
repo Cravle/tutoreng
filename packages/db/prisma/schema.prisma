@@ -12,11 +12,56 @@ datasource db {
 }
 
 model User {
-  id        Int @default(autoincrement()) @id
-  email     String @unique
-  name      String
-  password  String @hidden
-  role      RoleEnum @default(STUDENT)
+  id                String               @id @default(cuid())
+  name              String
+  suraname          String
+  email             String               @unique
+  mobileNumber      String
+  password          String
+  role              RoleEnum             @default(STUDENT)
+  balance           Int
+  isGraduated       Boolean
+  ownedEvents       Event[]              @relation("owners")
+  UserOnEvents      UserOnEvents[]
+  teacherConnection TechaersToStudents[] @relation(name: "teacherConnection")
+  studentConnection TechaersToStudents[] @relation(name: "studentConnection")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TechaersToStudents {
+  id        String @id @default(cuid())
+  teacherId String
+  teacher   User   @relation(name: "teacherConnection", fields: [teacherId], references: [id])
+  studentId String
+  student   User   @relation(name: "studentConnection", fields: [studentId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserOnEvents {
+  id      String @id @default(cuid())
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
+}
+
+model Event {
+  id           String         @id @default(cuid())
+  title        String
+  owner        User           @relation(fields: [ownerId], references: [id], name: "owners")
+  ownerId      String
+  guestsId     Int[]
+  dateFrom     DateTime
+  dateTo       DateTime
+  zoomurl      String
+  homeworkUrl  String
+  teacherNotes String
+  studentNotes String
+  UserOnEvents UserOnEvents[]
 }
 
 enum RoleEnum {
@@ -24,4 +69,3 @@ enum RoleEnum {
   TUTOR
   ADMIN
 }
-
