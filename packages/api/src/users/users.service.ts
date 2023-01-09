@@ -1,28 +1,87 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { User } from '@tutoreng/db/src';
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
-  create(createUserDto: CreateUserDto) {
-    return this.prisma.user.create({ data: createUserDto });
+  async create(createUserDto: CreateUserDto) {
+    const candidate = await this.prisma.user.findUnique({
+      where: {
+        email: createUserDto.email,
+      },
+    });
+    console.log(candidate, candidate);
+
+    if (candidate) {
+      throw new HttpException(
+        'User with this email has already created',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const data = {
+      ...(createUserDto as NonNullable<CreateUserDto>),
+      balance: 0,
+      isGraduated: false,
+    };
+    const user = await this.prisma.user.create({ data });
+    return user;
   }
 
-  findAll() {
-    return this.prisma.user.findMany();
+  async findAll() {
+    return await this.prisma.user.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    if (!user) {
+      throw new HttpException(
+        `There is no user with id: ${id}`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    return await this.prisma.user.update({
+      where: { id },
+      data: updateUserDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    const candidate = await this.prisma.user.findUnique({ where: { id } });
+    console.log(candidate, 'candidate');
+    if (!candidate) {
+      throw new HttpException(
+        `There is no user with id: ${id}`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    try {
+      this.prisma.user.delete({ where: { id } });
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.BAD_REQUEST);
+    }
+    return HttpStatus.OK;
+  }
+
+  createUserResponse(user: User | User[]) {
+    if (Array.isArray(user)) {
+      return user.map((i) => {
+        const withoutPassword = i;
+        delete withoutPassword.password;
+        return withoutPassword;
+      });
+    }
+
+    const withoutPassword = user;
+    delete withoutPassword.password;
+    return withoutPassword;
   }
 }

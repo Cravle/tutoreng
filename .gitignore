@@ -1,4 +1,6 @@
 ./yarn/*
++ .turbo
+
 
 node_modules
 

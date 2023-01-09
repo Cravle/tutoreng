@@ -14,13 +14,13 @@ datasource db {
 model User {
   id                String               @id @default(cuid())
   name              String
-  suraname          String
+  surname           String
   email             String               @unique
   mobileNumber      String
   password          String
   role              RoleEnum             @default(STUDENT)
   balance           Int
-  isGraduated       Boolean
+  isGraduated       Boolean              @default(false)
   ownedEvents       Event[]              @relation("owners")
   UserOnEvents      UserOnEvents[]
   teacherConnection TechaersToStudents[] @relation(name: "teacherConnection")
