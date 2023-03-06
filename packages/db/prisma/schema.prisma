@@ -20,8 +20,8 @@ model User {
   password          String
   role              RoleEnum             @default(STUDENT)
   balance           Int
-  isGraduated       Boolean              @default(false)
-  ownedEvents       Event[]              @relation("owners")
+  isGraduated       Boolean
+  ownedEvents       ScheduleEvent[]      @relation("owners")
   UserOnEvents      UserOnEvents[]
   teacherConnection TechaersToStudents[] @relation(name: "teacherConnection")
   studentConnection TechaersToStudents[] @relation(name: "studentConnection")
@@ -42,26 +42,27 @@ model TechaersToStudents {
 }
 
 model UserOnEvents {
-  id      String @id @default(cuid())
+  id      String        @id @default(cuid())
   userId  String
-  user    User   @relation(fields: [userId], references: [id])
+  user    User          @relation(fields: [userId], references: [id])
   eventId String
-  event   Event  @relation(fields: [eventId], references: [id])
+  event   ScheduleEvent @relation(fields: [eventId], references: [id])
 }
 
-model Event {
+model ScheduleEvent {
   id           String         @id @default(cuid())
   title        String
   owner        User           @relation(fields: [ownerId], references: [id], name: "owners")
   ownerId      String
-  guestsId     Int[]
   dateFrom     DateTime
   dateTo       DateTime
   zoomurl      String
-  homeworkUrl  String
-  teacherNotes String
-  studentNotes String
+  homeworkUrl  String?
+  teacherNotes String?
+  studentNotes String?
   UserOnEvents UserOnEvents[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 }
 
 enum RoleEnum {

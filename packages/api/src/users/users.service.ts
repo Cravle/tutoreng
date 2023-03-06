@@ -23,7 +23,7 @@ export class UsersService {
     }
 
     const data = {
-      ...(createUserDto as NonNullable<CreateUserDto>),
+      ...createUserDto,
       balance: 0,
       isGraduated: false,
     };
@@ -33,6 +33,18 @@ export class UsersService {
 
   async findAll() {
     return await this.prisma.user.findMany();
+  }
+
+  async findByEmail(email: string) {
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    console.log(user, 'user');
+    if (!user) {
+      throw new HttpException(
+        `There is no user with email:${email}`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return user;
   }
 
   async findOne(id: string) {
