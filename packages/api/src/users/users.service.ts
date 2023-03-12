@@ -1,4 +1,5 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { hash } from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -13,7 +14,6 @@ export class UsersService {
         email: createUserDto.email,
       },
     });
-    console.log(candidate, candidate);
 
     if (candidate) {
       throw new HttpException(
@@ -21,13 +21,16 @@ export class UsersService {
         HttpStatus.BAD_REQUEST,
       );
     }
+    const haashedPassword = await hash(createUserDto.password, 10);
 
     const data = {
       ...createUserDto,
+      password: haashedPassword,
       balance: 0,
       isGraduated: false,
     };
     const user = await this.prisma.user.create({ data });
+    Logger.log(user, 'User created');
     return user;
   }
 
@@ -37,7 +40,6 @@ export class UsersService {
 
   async findByEmail(email: string) {
     const user = await this.prisma.user.findUnique({ where: { email } });
-    console.log(user, 'user');
     if (!user) {
       throw new HttpException(
         `There is no user with email:${email}`,
@@ -59,15 +61,17 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    return await this.prisma.user.update({
+    const user = await this.prisma.user.update({
       where: { id },
       data: updateUserDto,
     });
+
+    Logger.log('User updated', user);
+    return user;
   }
 
   async remove(id: string) {
     const candidate = await this.prisma.user.findUnique({ where: { id } });
-    console.log(candidate, 'candidate');
     if (!candidate) {
       throw new HttpException(
         `There is no user with id: ${id}`,
@@ -80,6 +84,9 @@ export class UsersService {
     } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }
+
+    Logger.log('User deleted', candidate.id);
+
     return HttpStatus.OK;
   }
 

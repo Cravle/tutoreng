@@ -1,19 +1,27 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
+  Param,
+  Patch,
   Post,
+  Query,
   Req,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import RequestWithUser from '../types/requestWithUser';
+import { UpdateEventDto } from './dto/update-event.dto';
 
 @Controller('events')
 @UseGuards(JwtAuthGuard)
+@UsePipes(new ValidationPipe({ transform: true }))
 export class EventsController {
   constructor(
     @Inject(EventsService)
@@ -21,14 +29,33 @@ export class EventsController {
   ) {}
 
   @Post()
-  async create(@Body() createEventDto: CreateEventDto) {
-    return this.eventsService.create(createEventDto);
+  async create(
+    @Body() createEventDto: CreateEventDto,
+    @Req() request: RequestWithUser,
+  ) {
+    return this.eventsService.create(createEventDto, request.user);
   }
 
   @Get()
   async findAll(@Req() request: RequestWithUser) {
-    console.log(request.user, 'request.user event 21 ====');
-
     return this.eventsService.findAll();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.eventsService.findOne(id);
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return this.eventsService.delete(id);
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateEventDto: UpdateEventDto,
+  ) {
+    return this.eventsService.update(id, updateEventDto);
   }
 }

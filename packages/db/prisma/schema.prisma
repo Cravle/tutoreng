@@ -22,12 +22,36 @@ model User {
   balance           Int
   isGraduated       Boolean
   ownedEvents       ScheduleEvent[]      @relation("owners")
-  UserOnEvents      UserOnEvents[]
+  asGuest           UserOnEvents[]
   teacherConnection TechaersToStudents[] @relation(name: "teacherConnection")
   studentConnection TechaersToStudents[] @relation(name: "studentConnection")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model UserOnEvents {
+  id      String        @id @default(cuid())
+  userId  String
+  user    User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  eventId String
+  event   ScheduleEvent @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model ScheduleEvent {
+  id           String         @id @default(cuid())
+  title        String
+  owner        User           @relation(fields: [ownerId], references: [id], name: "owners", onDelete: Cascade)
+  ownerId      String
+  dateFrom     DateTime
+  dateTo       DateTime
+  zoomurl      String
+  homeworkUrl  String?
+  teacherNotes String?
+  studentNotes String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  guests       UserOnEvents[]
 }
 
 model TechaersToStudents {
@@ -39,30 +63,6 @@ model TechaersToStudents {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model UserOnEvents {
-  id      String        @id @default(cuid())
-  userId  String
-  user    User          @relation(fields: [userId], references: [id])
-  eventId String
-  event   ScheduleEvent @relation(fields: [eventId], references: [id])
-}
-
-model ScheduleEvent {
-  id           String         @id @default(cuid())
-  title        String
-  owner        User           @relation(fields: [ownerId], references: [id], name: "owners")
-  ownerId      String
-  dateFrom     DateTime
-  dateTo       DateTime
-  zoomurl      String
-  homeworkUrl  String?
-  teacherNotes String?
-  studentNotes String?
-  UserOnEvents UserOnEvents[]
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
 }
 
 enum RoleEnum {

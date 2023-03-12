@@ -1,6 +1,7 @@
 import { EventCreateDto } from '@tutoreng/shared/src/event/create.event.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsDate, IsNotEmpty } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class CreateEventDto implements EventCreateDto {
   @ApiProperty()
@@ -9,14 +10,14 @@ export class CreateEventDto implements EventCreateDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  ownerId: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
+  @IsDate()
+  @Transform(({ value }) => new Date(value))
   dateFrom: Date;
 
   @ApiProperty()
   @IsNotEmpty()
+  @IsDate()
+  @Transform(({ value }) => new Date(value))
   dateTo: Date;
 
   @ApiProperty()
@@ -33,5 +34,8 @@ export class CreateEventDto implements EventCreateDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  gusts: string[];
+  guests: string[];
+
+  @ApiProperty()
+  ownerId: string | null;
 }

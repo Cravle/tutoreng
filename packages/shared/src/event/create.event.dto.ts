@@ -5,10 +5,10 @@ export interface EventCreateDto extends WithoutDates<ScheduleEvent> {
   title: string
   dateFrom: Date
   dateTo: Date
-  ownerId: string
-  gusts: string[]
+  guests: string[]
   zoomurl: string
   homeworkUrl: string | null
   teacherNotes: string | null
   studentNotes: string | null
+  ownerId: string | null
 }
