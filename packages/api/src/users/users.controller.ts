@@ -1,16 +1,17 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  HttpException,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PaginateQuery } from '../types/paginateQuery';
 
 @Controller('users')
 export class UsersController {
@@ -23,8 +24,12 @@ export class UsersController {
   }
 
   @Get()
-  async findAll() {
-    const res = await this.usersService.findAll();
+  async findAll(@Query() query: PaginateQuery) {
+    const res = await this.usersService.findAll(
+      query.page,
+      query.limit,
+      query.search,
+    );
     return this.usersService.createUserResponse(res);
   }
 

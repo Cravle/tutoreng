@@ -1,13 +1,26 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { hash } from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@tutoreng/db/src';
+import { PaginationResult } from '../prisma/pagination';
+import { PaginationService } from '../prisma/pagintaion.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    @Inject(PrismaService)
+    private prisma: PrismaService,
+    @Inject(PaginationService)
+    private paginationService: PaginationService,
+  ) {}
   async create(createUserDto: CreateUserDto) {
     const candidate = await this.prisma.user.findUnique({
       where: {
@@ -34,8 +47,39 @@ export class UsersService {
     return user;
   }
 
-  async findAll() {
-    return await this.prisma.user.findMany();
+  async findAll(page: number, limit: number, search: string) {
+    const where = search && {
+      OR: [
+        {
+          name: {
+            contains: search,
+          },
+        },
+        {
+          email: {
+            contains: search,
+          },
+        },
+        {
+          surname: {
+            contains: search,
+          },
+        },
+      ],
+    };
+
+    const [users, count] = await this.prisma.$transaction([
+      this.prisma.user.findMany({
+        where,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        ...this.paginationService.getParams(page, limit),
+      }),
+      this.prisma.user.count({ where }),
+    ]);
+
+    return this.paginationService.paginate(users, count, page, limit, search);
   }
 
   async findByEmail(email: string) {
@@ -90,7 +134,13 @@ export class UsersService {
     return HttpStatus.OK;
   }
 
-  createUserResponse(user: User | User[]) {
+  createUserResponse(user: User | User[] | PaginationResult<User>) {
+    if (user instanceof PaginationResult) {
+      return {
+        ...user,
+        data: this.createUserResponse(user.data),
+      };
+    }
     if (Array.isArray(user)) {
       return user.map((i) => {
         const withoutPassword = i;

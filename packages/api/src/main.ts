@@ -1,3 +1,5 @@
+import { ValidationPipe } from '@nestjs/common';
+
 if (!process.env.IS_TS_NODE) {
   require('module-alias/register');
 }
@@ -16,6 +18,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   await app.listen(8080);
 }

@@ -7,11 +7,8 @@ import {
   Param,
   Patch,
   Post,
-  Query,
   Req,
   UseGuards,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -21,7 +18,6 @@ import { UpdateEventDto } from './dto/update-event.dto';
 
 @Controller('events')
 @UseGuards(JwtAuthGuard)
-@UsePipes(new ValidationPipe({ transform: true }))
 export class EventsController {
   constructor(
     @Inject(EventsService)
