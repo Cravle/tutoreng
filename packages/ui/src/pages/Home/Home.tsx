@@ -1,3 +1,9 @@
+import TimeTable from '../../components/TimeTable'
+
 export const Home = () => {
-  return <div>home page </div>
+  return (
+    <div className={'w-full h-screen overflow-y-scroll'}>
+      <TimeTable />
+    </div>
+  )
 }
