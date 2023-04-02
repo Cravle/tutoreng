@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { login } from '../../api/client'
-import { AuthRes } from '../../api/interfaces/auth'
+import type { AuthRes } from '../../api/interfaces/auth'
 
 export const loginService = (
   onSuccess: (data: AuthRes | undefined) => void,

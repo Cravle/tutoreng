@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { AuthReq, AuthRes } from './interfaces/auth'
+import type { AuthReq, AuthRes } from './interfaces/auth'
 
 export const apiClient = axios.create({
   baseURL: 'http://localhost:8080',
