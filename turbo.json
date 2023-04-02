@@ -21,6 +21,9 @@
         "test/**/*.tsx"
       ]
     },
+    "dev" : {
+      "cache": false
+    },
     "lint": {
       "outputs": []
     },
