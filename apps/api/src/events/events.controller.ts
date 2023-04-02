@@ -13,7 +13,7 @@ import {
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import RequestWithUser from '../types/requestWithUser';
+import type RequestWithUser from '../types/requestWithUser';
 import { UpdateEventDto } from './dto/update-event.dto';
 
 @Controller('events')

@@ -6,10 +6,10 @@ import {
   Logger,
 } from '@nestjs/common';
 import { hash } from 'bcrypt';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from '@tutoreng/db/src';
+import type { CreateUserDto } from './dto/create-user.dto';
+import type { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import type { User } from '@tutoreng/db/src';
 import { PaginationResult } from '../prisma/pagination';
 import { PaginationService } from '../prisma/pagintaion.service';
 
@@ -134,7 +134,7 @@ export class UsersService {
     return HttpStatus.OK;
   }
 
-  createUserResponse(user: User | User[] | PaginationResult<User>) {
+  createUserResponse(user: User | User[] | PaginationResult<User>): any {
     if (user instanceof PaginationResult) {
       return {
         ...user,

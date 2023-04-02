@@ -1,4 +1,4 @@
-import { EventCreateDto } from '@tutoreng/shared/src/event/create.event.dto';
+import type { EventCreateDto } from '@tutoreng/shared/src/event/create.event.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsNotEmpty } from 'class-validator';
 import { Transform } from 'class-transformer';
