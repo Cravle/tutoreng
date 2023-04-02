@@ -1,5 +1,5 @@
+import type { User } from '@tutoreng/db/src/'
 import { create } from 'zustand'
-import type { User } from '@tutoreng/db'
 
 interface IUserStore {
   user: Omit<User, 'password'> | null

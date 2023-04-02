@@ -1,9 +1,9 @@
 export class PaginationData {
-  total: number;
-  perPage: number;
-  currentPage: number;
-  lastPage: number;
-  params: any;
+  total: number
+  perPage: number
+  currentPage: number
+  lastPage: number
+  params: any
 
   constructor(
     total: number,
@@ -12,29 +12,29 @@ export class PaginationData {
     lastPage: number,
     params: any,
   ) {
-    this.total = total;
-    this.perPage = perPage;
-    this.currentPage = currentPage;
-    this.lastPage = lastPage;
-    this.params = params;
+    this.total = total
+    this.perPage = perPage
+    this.currentPage = currentPage
+    this.lastPage = lastPage
+    this.params = params
   }
 }
 
 export class PaginationMeta {
-  pagination: PaginationData;
+  pagination: PaginationData
 
   constructor(pagination: PaginationData) {
-    this.pagination = pagination;
+    this.pagination = pagination
   }
 }
 
 export class PaginationResult<T> {
-  data: T[];
+  data: T[]
 
-  meta: PaginationMeta;
+  meta: PaginationMeta
 
   constructor(data: T[], meta: PaginationMeta) {
-    this.data = data;
-    this.meta = meta;
+    this.data = data
+    this.meta = meta
   }
 }

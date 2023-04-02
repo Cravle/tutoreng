@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { PaginationMeta, PaginationResult, PaginationData } from './pagination';
+import { Injectable } from '@nestjs/common'
+
+import { PaginationData, PaginationMeta, PaginationResult } from './pagination'
 
 @Injectable()
 export class PaginationService {
@@ -21,14 +22,14 @@ export class PaginationService {
           query,
         ),
       ),
-    );
-    return result;
+    )
+    return result
   }
 
   getParams(page: number, limit = 10) {
     return {
       skip: (page - 1) * limit,
       take: limit,
-    };
+    }
   }
 }

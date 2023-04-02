@@ -1,7 +1,10 @@
+import { Suspense } from 'react'
+
 import { Navigate, useRoutes } from 'react-router-dom'
+
 import { Layout } from '../components/Layout'
 import { Home } from '../pages/Home'
-import { Suspense } from 'react'
+
 import { ROUTES } from './routes'
 
 export const ProtectedRouting = () => {

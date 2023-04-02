@@ -1,8 +1,8 @@
-import type { Request } from 'express';
-import { User } from '@tutoreng/db/src';
+import { User } from '@tutoreng/db/src'
+import type { Request } from 'express'
 
 interface RequestWithUser extends Request {
-  user: User;
+  user: User
 }
 
-export default RequestWithUser;
+export default RequestWithUser

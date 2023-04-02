@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios'
+
 import type { AuthReq, AuthRes } from './interfaces/auth'
 
 export const apiClient = axios.create({

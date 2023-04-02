@@ -2,15 +2,16 @@ import { memo } from 'react'
 
 import { ViewState } from '@devexpress/dx-react-scheduler'
 import {
-  Scheduler,
-  WeekView,
   Appointments,
-  Toolbar,
-  ViewSwitcher,
   DayView,
   MonthView,
+  Scheduler,
+  Toolbar,
+  ViewSwitcher,
+  WeekView,
 } from '@devexpress/dx-react-scheduler-material-ui'
 import { Paper } from '@mui/material'
+
 import { appointments } from './mock'
 import { useTimeTable } from './useTimeTable'
 
