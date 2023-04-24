@@ -1,26 +1,30 @@
 import { Outlet } from 'react-router-dom'
 
-import Sidebar from './Sidebar'
+import TopBar from './TopBar/TopBar'
+import SideBar from './SideBar'
 
 export const Layout = () => {
   return (
-    <div className={'w-full h-screen bg-blue-100 overflow-hidden'}>
-      <header>
-        <div className={'w-full h-12 bg-blue-500 items-center flex'}>
-          <div className={'w-3/4 flex mx-auto'}>
-            <div className="text-2xl">
-              <span className={'text-red-600'}>T</span>
-              <span className={'text-white'}>utoreng</span>
-            </div>
+    <div className={'flex'}>
+      {/*  SideBar */}
+      <SideBar />
+
+      <div className={'w-full h-screen bg-main-bg'}>
+        <header>
+          <div
+            className={
+              'w-full h-24 bg-white border-solid border-b items-center flex'
+            }
+          >
+            <TopBar />
           </div>
-        </div>
-      </header>
-      <main>
-        <div className={'w-full h-screen flex'}>
-          <Sidebar />
-          <Outlet />
-        </div>
-      </main>
+        </header>
+        <main>
+          <div className={'w-full flex'}>
+            <Outlet />
+          </div>
+        </main>
+      </div>
     </div>
   )
 }

@@ -9,8 +9,13 @@ export const useTimeTable = () => {
     setCurrentView(view)
   }
 
+  const onCommitChanges = (props: any) => {
+    console.log(props)
+  }
+
   return {
     currenView,
     onCurrentViewNameChange,
+    onCommitChanges,
   }
 }
