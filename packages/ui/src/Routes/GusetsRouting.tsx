@@ -1,6 +1,9 @@
 import { lazy, memo, Suspense } from 'react'
+
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom'
+
 import { Layout } from '../components/Layout'
+
 import { ROUTES } from './routes'
 
 const LoginPage = lazy(() => import('../pages/Login'))

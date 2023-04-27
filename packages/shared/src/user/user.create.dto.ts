@@ -1,4 +1,5 @@
-import type { User, RoleEnum } from '@tutoreng/db/src'
+import type { RoleEnum, User } from '@tutoreng/db/src'
+
 import type { UserResponseType } from './userResponseType'
 
 export interface UserCreateDto extends Partial<User> {

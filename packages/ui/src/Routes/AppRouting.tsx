@@ -1,11 +1,8 @@
-import useUserStore from '../stores/user.store'
-import { ProtectedRouting } from './ProtectedRouting'
 import UnAuthRoutes from './GusetsRouting'
+import { ProtectedRouting } from './ProtectedRouting'
 
 export const AppRouting = () => {
-  const user = useUserStore((store) => store.user)
-
-  console.log(user, 'user')
+  const user = true /* useUserStore((store) => store.user)*/
 
   return user ? <ProtectedRouting /> : <UnAuthRoutes />
 }

@@ -1,4 +1,5 @@
 import type { ScheduleEvent } from '@tutoreng/db/src'
+
 import type { WithoutDates } from '../types/WithoutDates'
 
 export interface EventCreateDto extends WithoutDates<ScheduleEvent> {

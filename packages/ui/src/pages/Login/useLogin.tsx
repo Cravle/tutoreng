@@ -1,11 +1,14 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import useUserStore from '../../stores/user.store'
-import { AuthReq, AuthRes } from '../../api/interfaces/auth'
-import { loginService } from './login.service'
 import { useNavigate } from 'react-router-dom'
+
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+
+import type { AuthReq, AuthRes } from '../../api/interfaces/auth'
 import { ROUTES } from '../../Routes/routes'
+import useUserStore from '../../stores/user.store'
+
+import { loginService } from './login.service'
 
 const schema = yup.object({
   email: yup.string().email().required(),

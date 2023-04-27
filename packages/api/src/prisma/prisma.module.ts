@@ -1,6 +1,8 @@
-import { Module } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { PaginationService } from './pagintaion.service';
+import { Module } from '@nestjs/common'
+
+import { PrismaService } from '../prisma/prisma.service'
+
+import { PaginationService } from './pagintaion.service'
 
 @Module({
   providers: [PrismaService, PaginationService],

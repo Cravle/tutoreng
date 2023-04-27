@@ -1,5 +1,5 @@
-import type { UserResponseType } from 'src/user/userResponseType'
 import type { UserCreateDto } from 'src/user/user.create.dto'
+import type { UserResponseType } from 'src/user/userResponseType'
 
 export interface UpdateUserRequest extends Partial<UserCreateDto> {}
 

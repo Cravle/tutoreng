@@ -1,7 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { compare } from 'bcrypt';
-import { UsersService } from '../users/users.service';
-import { JwtService } from '@nestjs/jwt';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+
+import { compare } from 'bcrypt'
+
+import { UsersService } from '../users/users.service'
 
 @Injectable()
 export class AuthService {
@@ -12,25 +14,25 @@ export class AuthService {
 
   async validateUser(email: string, password: string) {
     try {
-      const user = await this.userService.findByEmail(email);
-      const isValidPassword = await compare(password, user.password);
+      const user = await this.userService.findByEmail(email)
+      const isValidPassword = await compare(password, user.password)
       if (user && isValidPassword) {
-        return user;
+        return user
       }
     } catch (e) {
       throw new HttpException(
         'Wrong credentials provided',
         HttpStatus.BAD_REQUEST,
-      );
+      )
     }
 
-    return null;
+    return null
   }
 
   async login(user: any) {
-    const payload = { email: user.email, userId: user.id };
+    const payload = { email: user.email, userId: user.id }
     return {
       accessToken: this.jwtService.sign(payload),
-    };
+    }
   }
 }
