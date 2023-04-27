@@ -40,7 +40,7 @@ const Root = styled.div<{
       padding: 12px;
     `}
 
-  transition: width 0.3s ease-in-out;
+  transition: width 0.2s ease-in-out;
 `
 
 const Box = styled.div`

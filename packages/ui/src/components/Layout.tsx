@@ -5,7 +5,7 @@ import SideBar from './SideBar'
 
 export const Layout = () => {
   return (
-    <div className={'flex'}>
+    <div className={'flex h-screen overflow-hidden'}>
       {/*  SideBar */}
       <SideBar />
 
@@ -13,7 +13,7 @@ export const Layout = () => {
         <header>
           <div
             className={
-              'w-full h-24 bg-white border-solid border-b items-center flex'
+              'w-full h-24 bg-white border-b border-solid border-mainBorder items-center flex'
             }
           >
             <TopBar />

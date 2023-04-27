@@ -1,12 +1,16 @@
 import { memo } from 'react'
 
+import { useNavigate } from 'react-router-dom'
+
 import AvatarPlaceholder from '../../assets/AvatarPlaceholder.png'
 import { COLORS } from '../../constatnts/colors'
+import { ROUTES } from '../../Routes/routes'
 import AddIcon from '../Icons/AddIcon'
 import Bell from '../Icons/Bell'
 import Medium from '../Typography/Medium'
 
 export default memo(function TopBar() {
+  const navigate = useNavigate()
   return (
     <div className="w-full pr-9">
       <div className="flex justify-end">
@@ -24,7 +28,10 @@ export default memo(function TopBar() {
           <Bell />
         </div>
 
-        <div>
+        <div
+          onClick={() => navigate(ROUTES.PROFILE)}
+          className="cursor-pointer"
+        >
           <img src={AvatarPlaceholder} />
         </div>
       </div>

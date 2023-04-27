@@ -4,6 +4,7 @@ export const ROUTES = {
   BALANCE: '/balance',
   CALENDAR: '/calendar',
   SETTINGS: '/settings',
+  PROFILE: '/profile',
 } as const
 
 export type ROUTE_TYPES = typeof ROUTES[keyof typeof ROUTES]

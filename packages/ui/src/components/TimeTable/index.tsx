@@ -14,10 +14,19 @@ import parse from 'date-fns/parse'
 import startOfHour from 'date-fns/startOfHour'
 import startOfWeek from 'date-fns/startOfWeek'
 
+import useEventStore from '../../stores/events.store'
+
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 
-export default memo(function TimeTable() {
+type TimeTableprops = {
+  handleOpenEventModal: () => void
+}
+
+export default memo(function TimeTable({
+  handleOpenEventModal,
+}: TimeTableprops) {
+  const setSelectedDate = useEventStore((store) => store.setSelectedDate)
   const [events, setEvents] = useState<Event[]>([
     {
       title: 'Learn cool stuff',
@@ -46,6 +55,11 @@ export default memo(function TimeTable() {
   }, [])
 
   const handleSelectSlot = useCallback((event: Event) => {
+    handleOpenEventModal()
+    setSelectedDate({
+      startTime: event.start,
+      endTime: event.end,
+    })
     console.log(event, 'event 50')
   }, [])
 
@@ -54,10 +68,11 @@ export default memo(function TimeTable() {
   }
 
   return (
-    <div className={'w-4/5'}>
-      <div className=" overflow-scroll">
-        <Paper className="p-2 rounded-lg  h-calender overflow-scroll">
+    <div className={'w-full flex flex-grow flex-col'}>
+      <div>
+        <Paper className="p-2 rounded-lg ">
           <DnDCalendar
+            className="h-calender"
             defaultView="week"
             events={events}
             localizer={localizer}
@@ -73,7 +88,6 @@ export default memo(function TimeTable() {
                 backgroundColor: event?.resource.color,
               },
             })}
-            style={{ height: '100vh' }}
             components={{
               event: ({ event }: any) => <span>{event.title}</span>,
             }}
