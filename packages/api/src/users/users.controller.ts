@@ -7,8 +7,10 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common'
 
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { PaginateQuery } from '../types/paginateQuery'
 
 import { CreateUserDto } from './dto/create-user.dto'
@@ -16,6 +18,7 @@ import { UpdateUserDto } from './dto/update-user.dto'
 import { UsersService } from './users.service'
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

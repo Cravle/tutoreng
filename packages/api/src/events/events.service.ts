@@ -6,7 +6,7 @@ import {
   Logger,
 } from '@nestjs/common'
 
-import type { User } from '@tutoreng/db/src'
+import type { User } from '@tutoreng/db'
 
 import { PrismaService } from '../prisma/prisma.service'
 import { UsersService } from '../users/users.service'
