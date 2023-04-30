@@ -1,7 +1,7 @@
 import { memo } from 'react'
 
 import CreateEventModal from '../Modals/CreateEventModal/CreateEventModal'
-import NewEvent from '../NewEventButton/NewEventButton'
+import AddNewButton from '../NewEventButton/AddNewButton'
 import Students from '../Students/Students'
 import TimeTable from '../TimeTable'
 import Heading from '../Typography/Heading'
@@ -23,7 +23,10 @@ export default memo(function Home() {
         <div className="mb-5">
           <Heading>Нова подія</Heading>
         </div>
-        <NewEvent onClick={() => setOpenEventModal(true)} />
+        <AddNewButton
+          onClick={() => setOpenEventModal(true)}
+          title="Створити заняття"
+        />
 
         <Students />
       </div>

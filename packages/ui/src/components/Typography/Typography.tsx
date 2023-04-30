@@ -1,7 +1,9 @@
 import styled from '@emotion/styled'
 
+import type { COLORS } from '../../constatnts/colors'
+
 export type TypographyProps = {
-  color?: string
+  color?: keyof typeof COLORS | string
   fontSize?: string
   fontWeight?: string
   lineHeight?: string

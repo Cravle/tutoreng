@@ -1,4 +1,4 @@
-import type { RoleEnum, User } from '@tutoreng/db/src'
+import type { RoleEnum, User } from '@tutoreng/db'
 
 import type { UserResponseType } from './userResponseType'
 

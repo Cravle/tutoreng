@@ -5,9 +5,9 @@ import svgr from 'vite-plugin-svgr'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), svgr()],
-  // optimizeDeps: {
-  //   include: ['@tutoreng/db'],
-  // },
+  optimizeDeps: {
+    include: ['@tutoreng/db'],
+  },
   server: {
     port: 8000,
   },

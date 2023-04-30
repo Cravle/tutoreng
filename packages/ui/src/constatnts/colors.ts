@@ -7,4 +7,4 @@ export const COLORS = {
   'main-bg': '#F3F6FB',
   mainBorder: '#E7EAEC',
   white: '#FFFFFF',
-}
+} as const

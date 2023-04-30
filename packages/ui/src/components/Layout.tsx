@@ -19,8 +19,8 @@ export const Layout = () => {
             <TopBar />
           </div>
         </header>
-        <main>
-          <div className={'w-full flex'}>
+        <main className="h-content ">
+          <div className={'w-full flex h-full'}>
             <Outlet />
           </div>
         </main>

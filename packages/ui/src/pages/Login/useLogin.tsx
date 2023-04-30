@@ -23,12 +23,12 @@ export const useLogin = () => {
 
   const onSuccess = (data: AuthRes | undefined) => {
     setUser(data?.user)
+    localStorage.setItem('accessToken', data?.tokens.accessToken)
+    localStorage.setItem('userId', `${data?.user.id}`)
     navigate(ROUTES.HOME)
   }
 
   const { mutate, error: globalError } = loginService(onSuccess)
-
-  console.log(globalError, 'error')
 
   const {
     register,

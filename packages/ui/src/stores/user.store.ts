@@ -1,9 +1,9 @@
-import type { User } from '@tutoreng/db/src/'
+import type { UserResponseType } from '@tutoreng/shared/src'
 import { create } from 'zustand'
 
 interface IUserStore {
-  user: Omit<User, 'password'> | null
-  setUser: (user: Omit<User, 'password'> | null) => void
+  user: UserResponseType | null
+  setUser: (user: UserResponseType | null) => void
 }
 
 const useUserStore = create<IUserStore>((set) => ({

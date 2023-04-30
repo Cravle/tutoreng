@@ -15,6 +15,7 @@ import startOfHour from 'date-fns/startOfHour'
 import startOfWeek from 'date-fns/startOfWeek'
 
 import useEventStore from '../../stores/events.store'
+import useUserStore from '../../stores/user.store'
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
@@ -26,6 +27,7 @@ type TimeTableprops = {
 export default memo(function TimeTable({
   handleOpenEventModal,
 }: TimeTableprops) {
+  const user = useUserStore((store) => store.user)
   const setSelectedDate = useEventStore((store) => store.setSelectedDate)
   const [events, setEvents] = useState<Event[]>([
     {
@@ -60,7 +62,6 @@ export default memo(function TimeTable({
       startTime: event.start,
       endTime: event.end,
     })
-    console.log(event, 'event 50')
   }, [])
 
   const onEventDrop: withDragAndDropProps['onEventDrop'] = (data) => {
@@ -81,8 +82,9 @@ export default memo(function TimeTable({
             onSelectEvent={handleSelectEvent}
             onDoubleClickEvent={(event) => console.log(event)}
             onSelectSlot={handleSelectSlot}
-            resizable
-            selectable
+            resizable={user?.role !== 'STUDENT'}
+            selectable={user?.role !== 'STUDENT'}
+            draggableAccessor={() => user?.role !== 'STUDENT'}
             eventPropGetter={(event: any) => ({
               style: {
                 backgroundColor: event?.resource.color,

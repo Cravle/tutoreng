@@ -1,4 +1,4 @@
-import type { ScheduleEvent } from '@tutoreng/db/src'
+import type { ScheduleEvent } from '@tutoreng/db'
 
 import type { WithoutDates } from '../types/WithoutDates'
 
