@@ -6,7 +6,7 @@ import {
   Logger,
 } from '@nestjs/common'
 
-import { User } from '@tutoreng/db'
+import type { User } from '@tutoreng/db'
 import { hash } from 'bcrypt'
 
 import { PaginationResult } from '../prisma/pagination'

@@ -36,7 +36,7 @@ export default memo(function CreateNewUserModal({
         justifyContent: 'center',
       }}
     >
-      <div className="w-480 h-[640px] mx-auto my-auto ">
+      <div className="w-480 h-[700px] mx-auto my-auto ">
         <div className="h-full bg-white rounded-25px">
           {/* header */}
           <div className={'p-4 border-b border-solid border-mainBorder'}>
@@ -48,13 +48,39 @@ export default memo(function CreateNewUserModal({
             </div>
           </div>
           {/* body */}
-          <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+          <form
+            className="w-full"
+            onSubmit={
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              handleSubmit(onSubmit)
+            }
+          >
             <div className="p-7">
               <div className="mb-2">
                 <Small color={COLORS.menuFont}>Імʼя</Small>
               </div>
               <Controller
                 name="name"
+                control={control}
+                rules={{ required: true }}
+                render={({ field, fieldState }) => {
+                  return (
+                    <StyledInput
+                      variant="outlined"
+                      {...field}
+                      error={!!fieldState.error?.message}
+                      helperText={fieldState.error?.message}
+                    />
+                  )
+                }}
+              />
+
+              <div className="mb-2 mt-2">
+                <Small color={COLORS.menuFont}>Фамілія</Small>
+              </div>
+              <Controller
+                name="surname"
                 control={control}
                 rules={{ required: true }}
                 render={({ field, fieldState }) => {
@@ -147,7 +173,7 @@ export default memo(function CreateNewUserModal({
                 <Small color={COLORS.menuFont}>Номер телефону</Small>
               </div>
               <Controller
-                name="phoneNumber"
+                name="mobileNumber"
                 control={control}
                 rules={{ required: true }}
                 render={({ field, fieldState }) => {

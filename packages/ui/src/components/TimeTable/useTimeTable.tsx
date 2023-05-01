@@ -1,21 +1,13 @@
-import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
-import { TimeViews } from './interfaces'
+import { fetchEvents } from '../../api/events'
 
 export const useTimeTable = () => {
-  const [currenView, setCurrentView] = useState<string>(TimeViews.week)
-
-  const onCurrentViewNameChange = (view: string) => {
-    setCurrentView(view)
-  }
-
-  const onCommitChanges = (props: any) => {
-    console.log(props)
-  }
+  const { data } = useQuery(['getEvents'], () => fetchEvents(), {
+    cacheTime: 0,
+  })
 
   return {
-    currenView,
-    onCurrentViewNameChange,
-    onCommitChanges,
+    dataEvents: data?.data,
   }
 }

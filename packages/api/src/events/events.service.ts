@@ -55,6 +55,26 @@ export class EventsService {
     })
   }
 
+  async findAllByUser(user: User) {
+    return this.prisma.scheduleEvent.findMany({
+      where: {
+        OR: [
+          {
+            ownerId: user.id,
+          },
+          {
+            guests: {
+              some: {
+                userId: user.id,
+              },
+            },
+          },
+        ],
+      },
+      include: { owner: true, guests: true },
+    })
+  }
+
   async delete(id: string) {
     try {
       await this.prisma.scheduleEvent.delete({ where: { id } })

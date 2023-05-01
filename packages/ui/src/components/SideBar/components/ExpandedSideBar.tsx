@@ -3,14 +3,13 @@ import { memo } from 'react'
 import { COLORS } from '../../../constatnts/colors'
 import Medium from '../../Typography/Medium'
 import Small from '../../Typography/Small'
-import { SIDEBAR_ITEMS } from '../constants'
 
 import { MenuBox } from './CollapsedSideBar'
 import LogoBLock from './LogoBlock'
 import { useSideBarItem } from './useSideBarItem'
 
 export default memo(function ExpandedSideBar() {
-  const { handleClick, isActive } = useSideBarItem()
+  const { handleClick, isActive, menuItems } = useSideBarItem()
 
   return (
     <div className="h-screen ">
@@ -18,7 +17,7 @@ export default memo(function ExpandedSideBar() {
       <div className="mt-9 flex justify-start align-middle mb-3 ml-4">
         <Small color={COLORS.menuFont}>Меню</Small>
       </div>
-      {SIDEBAR_ITEMS.map((item, index) => (
+      {menuItems.map((item, index) => (
         <div
           className="flex align-middle"
           key={index}

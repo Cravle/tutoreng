@@ -14,8 +14,9 @@ datasource db {
 model User {
   id                String               @id @default(cuid())
   name              String
-  surname           String
+  surname           String?
   email             String               @unique
+  nickname          String?
   mobileNumber      String
   password          String
   role              RoleEnum             @default(STUDENT)
@@ -25,6 +26,9 @@ model User {
   asGuest           UserOnEvents[]
   teacherConnection TechaersToStudents[] @relation(name: "teacherConnection")
   studentConnection TechaersToStudents[] @relation(name: "studentConnection")
+
+  /// socials 
+  telegram String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -45,7 +49,7 @@ model ScheduleEvent {
   ownerId      String
   dateFrom     DateTime
   dateTo       DateTime
-  zoomurl      String
+  callUrl      String
   homeworkUrl  String?
   teacherNotes String?
   studentNotes String?

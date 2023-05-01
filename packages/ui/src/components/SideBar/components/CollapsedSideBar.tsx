@@ -5,13 +5,12 @@ import styled from '@emotion/styled'
 
 import { COLORS } from '../../../constatnts/colors'
 import Small from '../../Typography/Small'
-import { SIDEBAR_ITEMS } from '../constants'
 
 import LogoBLock from './LogoBlock'
 import { useSideBarItem } from './useSideBarItem'
 
 export default memo(function CollapsedSideBar() {
-  const { handleClick, isActive } = useSideBarItem()
+  const { handleClick, isActive, menuItems } = useSideBarItem()
 
   return (
     <div className="h-screen ">
@@ -21,7 +20,7 @@ export default memo(function CollapsedSideBar() {
         <Small color={COLORS.menuFont}>Меню</Small>
       </div>
       <div>
-        {SIDEBAR_ITEMS.map((item, index) => (
+        {menuItems.map((item, index) => (
           <div
             className="flex justify-center align-middle w-full mb-3"
             key={index}

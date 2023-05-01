@@ -22,7 +22,7 @@ export class CreateEventDto implements EventCreateDto {
   dateTo: Date
 
   @ApiProperty()
-  zoomurl: string | null
+  callUrl: string | null
 
   @ApiProperty()
   homeworkUrl: string | null

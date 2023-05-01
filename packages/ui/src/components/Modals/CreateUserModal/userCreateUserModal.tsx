@@ -2,46 +2,59 @@ import { useForm } from 'react-hook-form'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { RoleEnum } from '@tutoreng/db'
+import type { UserCreateDto } from '@tutoreng/shared/src/user'
 import * as yup from 'yup'
+
+import { createNewUserModalService } from './CreateNewUserModal.service'
 
 const schema = yup.object({
   name: yup.string().required(),
+  surname: yup.string().required(),
   email: yup.string().email().required(),
   nickname: yup.string().optional(),
-  phoneNumber: yup.string().optional(),
+  mobileNumber: yup.string().optional(),
   telegram: yup.string().required(),
   // role: yup.mixed().oneOf(Object.keys(RoleEnum)),
 })
 
 type FormData = yup.InferType<typeof schema>
 
+type FullFormData = FormData & {
+  role: RoleEnum
+}
+
 type UseCreateUserModal = {
   handleClose: () => void
 }
 
 export const useCreateUserModal = ({ handleClose }: UseCreateUserModal) => {
-  const { control, handleSubmit } = useForm<
-    FormData & {
-      role: RoleEnum
-    }
-  >({
+  const { control, handleSubmit } = useForm<FullFormData>({
     resolver: yupResolver(schema),
     defaultValues: {
       name: '',
+      surname: '',
       email: '',
       nickname: '',
-      phoneNumber: '',
+      mobileNumber: '',
       telegram: '',
       role: RoleEnum.STUDENT,
     },
   })
+  const { mutate } = createNewUserModalService()
 
   const handleClickOutside = () => {
     handleClose()
   }
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: Required<FullFormData>) => {
     console.log(data)
+
+    const newUser: UserCreateDto = {
+      ...data,
+      password: '123456',
+    }
+
+    mutate(newUser)
     handleClose()
   }
 

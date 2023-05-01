@@ -48,6 +48,7 @@ export default memo(function CreateEventModal({
     onSubmit,
     control,
     handleClickOutside,
+    students,
   } = useCreateEvent({ handleClose })
   console.log(event, 'event 41')
   return (
@@ -61,7 +62,7 @@ export default memo(function CreateEventModal({
         justifyContent: 'center',
       }}
     >
-      <div className="w-480 h-500 mx-auto my-auto ">
+      <div className="w-480 h-[600px] mx-auto my-auto ">
         <div className="h-full bg-white rounded-25px">
           {/* header */}
           <div className={'p-4 border-b border-solid border-mainBorder'}>
@@ -94,9 +95,28 @@ export default memo(function CreateEventModal({
                   )
                 }}
               />
+              <div className="mb-2 mt-5">
+                <Small color={COLORS.menuFont}>Посилання на урок</Small>
+              </div>
+              {/* call url */}
+              <Controller
+                name="callUrl"
+                control={control}
+                rules={{ required: true }}
+                render={({ field, fieldState }) => {
+                  return (
+                    <Input
+                      variant="outlined"
+                      {...field}
+                      error={!!fieldState.error?.message}
+                      helperText={fieldState.error?.message}
+                    />
+                  )
+                }}
+              />
 
               {/* Student name */}
-              <div className="mt-5" placeholder="Введіть імʼя учня">
+              <div className="mt-5">
                 <div className="mb-2">
                   <Small color={COLORS.menuFont}>Обрати учня</Small>
                 </div>
@@ -117,7 +137,13 @@ export default memo(function CreateEventModal({
                             Обрати імʼя учня
                           </DefaultMenutItem>
 
-                          <MenuItem value="vlad">Vlad </MenuItem>
+                          {students?.map((student) => {
+                            return (
+                              <MenuItem value={student.id}>
+                                {student.name} {student.surname}
+                              </MenuItem>
+                            )
+                          })}
                         </StyledSelect>
                       </FormControl>
                     )
