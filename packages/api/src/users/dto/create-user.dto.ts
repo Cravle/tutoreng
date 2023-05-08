@@ -1,7 +1,7 @@
 import { Optional } from '@nestjs/common'
 import { ApiProperty } from '@nestjs/swagger'
 
-import { RoleEnum } from '@tutoreng/db'
+import { RoleEnum, SexEnum } from '@tutoreng/db'
 import { UserCreateDto } from '@tutoreng/shared/src'
 import { IsEmail, IsNotEmpty } from 'class-validator'
 
@@ -18,6 +18,10 @@ export class CreateUserDto implements UserCreateDto {
   @ApiProperty()
   @IsNotEmpty()
   mobileNumber: string
+
+  @ApiProperty({ enum: SexEnum })
+  @IsNotEmpty()
+  sex: SexEnum
 
   @ApiProperty()
   @Optional()

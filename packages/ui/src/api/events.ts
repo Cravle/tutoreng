@@ -12,5 +12,16 @@ export const fetchEvents = async (search?: string) => {
 }
 
 export const postEvents = async (data: Omit<EventCreateDto, 'ownerId'>) => {
-  apiClient.post<ScheduleEvent>('/events', data)
+  return apiClient.post<ScheduleEvent>('/events', data)
+}
+
+export const updateEvent = async (
+  data: Partial<EventCreateDto>,
+  id: string,
+) => {
+  return apiClient.patch<ScheduleEvent>(`/events/${id}`, data)
+}
+
+export const deleteEvent = async (id: string) => {
+  return apiClient.delete<ScheduleEvent>(`/events/${id}`)
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
@@ -12,11 +12,11 @@ import { fetchUsers } from '../../../api/user'
 import { PRODUCTS } from '../../../constatnts/products'
 import useEventStore from '../../../stores/events.store'
 
-import { usePostEvent } from './createEventModal.service'
+import { usePostEvent, useUpdateEvent } from './createEventModal.service'
 const schema = yup.object({
   title: yup.string().required(),
   student: yup.string().required(),
-  product: yup.string().required(),
+  // product: yup.string().required(),
   callUrl: yup.string().url(),
   //datefns
   date: yup.date().required(),
@@ -24,7 +24,7 @@ const schema = yup.object({
   endTime: yup.string().required(),
 })
 
-type FormData = yup.InferType<typeof schema>
+export type EventFormData = yup.InferType<typeof schema>
 
 type UseCreateEvent = {
   handleClose: () => void
@@ -33,11 +33,15 @@ export const useCreateEvent = ({ handleClose }: UseCreateEvent) => {
   const { data: studentsData } = useQuery(['students'], () =>
     fetchUsers('student'),
   )
+  const selectedEvent = useEventStore((store) => store.selectedEvent)
 
-  const { mutate } = usePostEvent()
+  const { mutate: addEvent } = usePostEvent()
+  const { mutate: updateEvent } = useUpdateEvent(selectedEvent?.id)
 
   const selectDate = useEventStore((state) => state.selectedDate)
   const setSelectedDate = useEventStore((store) => store.setSelectedDate)
+  const setSelectedEvent = useEventStore((store) => store.setSelectedEvent)
+  console.log(selectedEvent, 'selected event')
 
   const startHoursAndMnutes = selectDate?.startTime
     ?.toLocaleTimeString()
@@ -48,26 +52,56 @@ export const useCreateEvent = ({ handleClose }: UseCreateEvent) => {
 
   const date = new Date(selectDate?.startTime || Date.now())
 
-  const { control, handleSubmit } = useForm<FormData>({
+  const { control, handleSubmit, setValue } = useForm<EventFormData>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      title: '',
-      student: '',
-      product: PRODUCTS[0],
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      date: dayjs(date) || dayjs(Date.now()),
-      startTime: startHoursAndMnutes,
-      endTime: endHoursAndMnutes,
-    },
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    defaultValues: selectedEvent
+      ? {
+          title: selectedEvent.title,
+          student:
+            studentsData?.data.find(
+              (student) => student.id === selectedEvent.guests[0].id,
+            ) || '',
+          // product: PRODUCTS[0],
+          date: dayjs(selectedEvent.dateFrom),
+          startTime: dayjs(selectedEvent.dateFrom).format('HH:mm'),
+          endTime: dayjs(selectedEvent.dateTo).format('HH:mm'),
+          callUrl: selectedEvent.callUrl,
+        }
+      : {
+          title: '',
+          student: '',
+          callUrl: '',
+          // product: PRODUCTS[0],
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          date: dayjs(date) || dayjs(Date.now()),
+          startTime: startHoursAndMnutes,
+          endTime: endHoursAndMnutes,
+        },
   })
+
+  useEffect(() => {
+    if (selectedEvent && studentsData) {
+      console.log(studentsData, ' 111 studentsData')
+      console.log(selectedEvent, ' 111 selectedEvent')
+      setValue(
+        'student',
+        studentsData.data.find(
+          (student) => student.id === selectedEvent.guests[0].user.id,
+        )?.id,
+      )
+    }
+  }, [studentsData])
 
   const handleClickOutside = () => {
     handleClose()
     setSelectedDate(null)
+    setSelectedEvent(null)
   }
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: EventFormData) => {
     const [startHours, startMinutes] = data.startTime.split(':')
     const [endHours, endMinutes] = data.endTime.split(':')
 
@@ -102,7 +136,12 @@ export const useCreateEvent = ({ handleClose }: UseCreateEvent) => {
     }
     console.log(dataToSend, 'data to send')
     handleClose()
-    mutate(dataToSend)
+    if (selectedEvent) {
+      updateEvent(dataToSend)
+      setSelectedDate(null)
+      return
+    }
+    addEvent(dataToSend)
     setSelectedDate(null)
   }
 

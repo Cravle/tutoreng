@@ -34,7 +34,7 @@ export const SIDEBAR_ITEMS: SideItem[] = [
   {
     Icon: SettingsIcon,
     title: 'Налаштування',
-    path: ROUTES.SETTINGS,
+    path: ROUTES.PROFILE,
   },
 ]
 
@@ -62,7 +62,7 @@ export const SIDEBAR_ADMIN_ITEMS: SideItem[] = [
   {
     Icon: SettingsIcon,
     title: 'Налаштування',
-    path: ROUTES.SETTINGS,
+    path: ROUTES.PROFILE,
   },
 ]
 
@@ -90,7 +90,7 @@ export const SIDEBAR_TUTOR_ITEMS: SideItem[] = [
   {
     Icon: SettingsIcon,
     title: 'Налаштування',
-    path: ROUTES.SETTINGS,
+    path: ROUTES.PROFILE,
   },
 ]
 

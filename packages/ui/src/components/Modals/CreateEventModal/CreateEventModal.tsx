@@ -5,7 +5,6 @@ import { Controller } from 'react-hook-form'
 import styled from '@emotion/styled'
 import {
   Button,
-  css,
   FormControl,
   MenuItem,
   Modal,
@@ -17,7 +16,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 
 import { COLORS } from '../../../constatnts/colors'
-import { PRODUCTS } from '../../../constatnts/products'
 import CloseModal from '../../Icons/CloseModal'
 import Medium from '../../Typography/Medium'
 import Small from '../../Typography/Small'
@@ -60,9 +58,12 @@ export default memo(function CreateEventModal({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        '& > div': {
+          outline: 'none',
+        },
       }}
     >
-      <div className="w-480 h-[600px] mx-auto my-auto ">
+      <div className="w-480 h-[520px] mx-auto my-auto ">
         <div className="h-full bg-white rounded-25px">
           {/* header */}
           <div className={'p-4 border-b border-solid border-mainBorder'}>
@@ -125,15 +126,15 @@ export default memo(function CreateEventModal({
                   control={control}
                   rules={{ required: true }}
                   render={({ field }) => {
+                    console.log(field, ' field')
                     return (
                       <FormControl className="w-full">
                         <StyledSelect
                           labelId="selectStudent"
-                          defaultValue={'default'}
                           value={field.value}
                           onChange={field.onChange}
                         >
-                          <DefaultMenutItem value="default">
+                          <DefaultMenutItem value="default" disabled>
                             Обрати імʼя учня
                           </DefaultMenutItem>
 
@@ -217,7 +218,7 @@ export default memo(function CreateEventModal({
                 </div>
               </div>
 
-              <div>
+              {/* <div>
                 <div className="mb-2 mt-5">
                   <Small color={COLORS.menuFont}>Обрати продукт</Small>
                 </div>
@@ -245,7 +246,7 @@ export default memo(function CreateEventModal({
                     )
                   }}
                 />
-              </div>
+              </div> */}
             </div>
             <div className="w-full flex justify-center">
               <div>
@@ -292,17 +293,17 @@ const StyledSelect = styled(Select)`
   }
 `
 
-const StyledProduct = styled.div<{ active: boolean }>`
-  padding: 6px;
-  border-radius: 8px;
-  margin-right: 12px;
-  cursor: pointer;
+// const StyledProduct = styled.div<{ active: boolean }>`
+//   padding: 6px;
+//   border-radius: 8px;
+//   margin-right: 12px;
+//   cursor: pointer;
 
-  background: ${COLORS.menuBgHover};
+//   background: ${COLORS.menuBgHover};
 
-  ${({ active }) =>
-    active &&
-    css`
-      background: ${COLORS.primary};
-    `}
-`
+//   ${({ active }) =>
+//     active &&
+//     css`
+//       background: ${COLORS.primary};
+//     `}
+// `

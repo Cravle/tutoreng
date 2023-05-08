@@ -28,7 +28,7 @@
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.4.0",
     "@nestjs/swagger": "^6.3.0",
-    "@tutoreng/db": "1.0.0",
+    "@tutoreng/db": "1.0.1",
     "@tutoreng/shared": "1.0.0",
     "@types/passport": "^1.0.12",
     "bcrypt": "^5.1.0",

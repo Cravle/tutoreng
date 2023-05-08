@@ -23,3 +23,21 @@ export const postUser = async (data: UserCreateDto) => {
 
   return res.data
 }
+
+export const patchUser = async (data: Partial<UserCreateDto>, id: string) => {
+  const res = await apiClient.patch<UserResponseType>(`/users/${id}`, data)
+
+  return res
+}
+
+export const updatePassword = async (
+  data: { oldPassword: string; newPassword: string },
+  id: string,
+) => {
+  const res = await apiClient.patch<UserResponseType>(
+    `/users/${id}/password`,
+    data,
+  )
+
+  return res
+}

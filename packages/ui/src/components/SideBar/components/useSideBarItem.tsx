@@ -10,7 +10,7 @@ export const useSideBarItem = () => {
   const location = useLocation()
   const user = useUserStore((state) => state.user)
 
-  const menuItems = SIDEBAR_ITEMS_BY_ROLE[user.role]
+  const menuItems = user ? SIDEBAR_ITEMS_BY_ROLE[user.role] : []
 
   const handleClick = (path: ROUTE_TYPES) => {
     navigate(path)

@@ -4,10 +4,14 @@ import { fetchUser } from '../api/user'
 import useUserStore from '../stores/user.store'
 
 export const useAppRouting = () => {
-  const { data: userData } = useQuery(
-    ['initialUser', localStorage.getItem('userId')],
+  const { data: userData, isLoading } = useQuery(
+    ['initialUser'],
     () => {
       const userId = localStorage.getItem('userId')
+      console.log('userId', userId)
+      if (!userId) {
+        return null
+      }
       return fetchUser(userId)
     },
     {
@@ -15,8 +19,11 @@ export const useAppRouting = () => {
         useUserStore.setState({ user: data })
       },
       refetchOnReconnect: false,
+      cacheTime: 0,
     },
   )
 
-  return !!userData
+  console.log('userData', userData)
+
+  return { isAuth: !!userData, isLoading }
 }

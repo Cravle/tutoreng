@@ -1,13 +1,15 @@
 import { memo } from 'react'
 
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { MuiTelInput } from 'mui-tel-input'
 
-import BigAvatarPlaceHolder from '../../assets/BigAvatarPlaceHolder.png'
-import { COLORS } from '../../constatnts/colors'
-import Small from '../Typography/Small'
+import BigAvatarPlaceHolder from '../../../assets/BigAvatarPlaceHolder.png'
+import { COLORS } from '../../../constatnts/colors'
+import useUserStore from '../../../stores/user.store'
+import ChoseButton from '../../ChoseButton/ChoseButton'
+import Small from '../../Typography/Small'
 
 export default memo(function PersonalData() {
+  const user = useUserStore((state) => state.user)
   return (
     <div className="w-full">
       <div className=" w-full flex items-center justify-center">
@@ -20,7 +22,7 @@ export default memo(function PersonalData() {
             Імʼя
           </Small>
         </div>
-        <div className="mt-5">Влад</div>
+        <div className="mt-5">{user.name}</div>
       </div>
 
       <div className="mt-7">
@@ -29,7 +31,7 @@ export default memo(function PersonalData() {
             Призвіще
           </Small>
         </div>
-        <div className="mt-5">Лобода</div>
+        <div className="mt-5">{user.surname}</div>
       </div>
 
       {/* стать та дата */}
@@ -41,21 +43,20 @@ export default memo(function PersonalData() {
             </Small>
           </div>
           <div className="gap-3 flex flex-row mt-2">
-            <div>Ч</div>
-            <div>Ж</div>
+            <ChoseButton active title={user.sex === 'MALE' ? 'Ч' : 'Ж'} />
           </div>
         </div>
         <div>
-          <div>
+          {/* <div>
             <Small color={COLORS.menuFont} fontWeight="500">
               Дата народження
             </Small>
-          </div>
-          <div className="mt-2">
+          </div> */}
+          {/* <div className="mt-2">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker />
+              <DatePicker disabled value={user.date} />
             </LocalizationProvider>
-          </div>
+          </div> */}
         </div>
       </div>
       {/* телефон */}
@@ -67,7 +68,22 @@ export default memo(function PersonalData() {
           </Small>
         </div>
         <div className="mt-2">
-          <div>+380 99 999 99 99</div>
+          <MuiTelInput
+            value={user.mobileNumber}
+            disabled
+            sx={{
+              border: 'none',
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  border: 'none',
+                },
+              },
+            }}
+            // onChange={field.onChange}
+            defaultCountry="UA"
+            // error={!!fieldState.error?.message}
+            // helperText={fieldState.error?.message}
+          />
         </div>
       </div>
 
@@ -78,11 +94,11 @@ export default memo(function PersonalData() {
             Email
           </Small>
         </div>
-        <div className="mt-2">example@gmail.com</div>
+        <div className="mt-2">{user.email}</div>
       </div>
 
       {/* time zone  */}
-      <div className="mt-7">
+      {/* <div className="mt-7">
         <div>
           <Small color={COLORS.menuFont} fontWeight="500">
             Часовий пояс
@@ -90,7 +106,7 @@ export default memo(function PersonalData() {
 
           <div className="mt-2">UTC +2</div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 })

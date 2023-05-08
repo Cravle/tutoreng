@@ -13,7 +13,7 @@ import { UsersService } from '../users/users.service'
 
 import { CreateEventDto } from './dto/create-event.dto'
 import { UpdateEventDto } from './dto/update-event.dto'
-
+// check jwt
 @Injectable()
 export class EventsService {
   constructor(
@@ -56,7 +56,7 @@ export class EventsService {
   }
 
   async findAllByUser(user: User) {
-    return this.prisma.scheduleEvent.findMany({
+    const res = await this.prisma.scheduleEvent.findMany({
       where: {
         OR: [
           {
@@ -71,8 +71,26 @@ export class EventsService {
           },
         ],
       },
-      include: { owner: true, guests: true },
+      include: {
+        owner: true,
+        guests: { include: { user: true } },
+      },
     })
+
+    // const finalRes = await res.map(async (event) => {
+    //   const guestsIds = event.guests.map((guest) => guest.userId)
+    //   console.log(guestsIds, 'guestsIds')
+    //   const guests = await this.usersService.findAllByIds(guestsIds)
+    //   console.log(guests, 'guests')
+    //   return {
+    //     ...event,
+    //     guests,
+    //   }
+    // })
+
+    // console.log(finalRes, 'finalRes')
+
+    return res
   }
 
   async delete(id: string) {

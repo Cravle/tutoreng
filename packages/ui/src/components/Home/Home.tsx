@@ -2,7 +2,6 @@ import { memo } from 'react'
 
 import CreateEventModal from '../Modals/CreateEventModal/CreateEventModal'
 import AddNewButton from '../NewEventButton/AddNewButton'
-import Students from '../Students/Students'
 import TimeTable from '../TimeTable'
 import Heading from '../Typography/Heading'
 
@@ -28,7 +27,7 @@ export default memo(function Home() {
           title="Створити заняття"
         />
 
-        <Students />
+        {/* <Students /> */}
       </div>
 
       {openEventModal && (

@@ -8,9 +8,9 @@ export default {
     extend: {
       colors: COLORS,
       padding: {
-       '4_5': '1.125rem', // 18px
+        '4_5': '1.125rem', // 18px
       },
-      margin:{
+      margin: {
         '18px': '18px',
       },
       width: {
@@ -25,18 +25,15 @@ export default {
         content: 'calc(100% - 96px)',
         calender: '81vh',
       },
-      borderRadius:{
+      borderRadius: {
         default: '10px',
-        '25px': '25px'
+        '25px': '25px',
       },
       boxShadow: {
-        'default': '0px 4px 4px rgba(0, 0, 0, 0.25)',
-      }
+        default: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+      },
     },
-    
   },
   plugins: [],
-  // eslint-disable-next-line 
-} satisfies Config;  // eslint-disable-line
-
-
+  // eslint-disable-next-line
+} satisfies Config // eslint-disable-line

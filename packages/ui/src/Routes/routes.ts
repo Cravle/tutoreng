@@ -8,4 +8,4 @@ export const ROUTES = {
   USERS: '/users',
 } as const
 
-export type ROUTE_TYPES = typeof ROUTES[keyof typeof ROUTES]
+export type ROUTE_TYPES = (typeof ROUTES)[keyof typeof ROUTES]

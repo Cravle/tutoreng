@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useState } from 'react'
 
 import { Calendar, dateFnsLocalizer, Event } from 'react-big-calendar'
 import withDragAndDrop, {
@@ -14,6 +14,7 @@ import startOfWeek from 'date-fns/startOfWeek'
 
 import useEventStore from '../../stores/events.store'
 import useUserStore from '../../stores/user.store'
+import EventDescription from '../EventDescription/EventDescription'
 
 import { useTimeTable } from './useTimeTable'
 
@@ -27,8 +28,12 @@ type TimeTableprops = {
 export default memo(function TimeTable({
   handleOpenEventModal,
 }: TimeTableprops) {
+  const [selectedEvent, setSelectedEvent] = useState<{
+    x: number
+    y: number
+    event: Event
+  }>(null)
   const { dataEvents } = useTimeTable()
-  console.log(dataEvents, 'events 41')
   const user = useUserStore((store) => store.user)
   const setSelectedDate = useEventStore((store) => store.setSelectedDate)
 
@@ -64,8 +69,15 @@ export default memo(function TimeTable({
   //   })
   // }
 
-  const handleSelectEvent = useCallback((event: Event) => {
+  const handleSelectEvent = useCallback((event: Event, e: any) => {
     console.log(event)
+    console.log(e.target)
+    const { top, left } = (e.target as HTMLDivElement).getBoundingClientRect()
+    setSelectedEvent({
+      x: left,
+      y: top,
+      event,
+    })
   }, [])
 
   const handleSelectSlot = useCallback((event: Event) => {
@@ -81,33 +93,39 @@ export default memo(function TimeTable({
   }
 
   return (
-    <div className={'w-full flex flex-grow flex-col'}>
-      <div>
-        <Paper className="p-2 rounded-lg ">
-          <DnDCalendar
-            className="h-calender"
-            defaultView="week"
-            events={events}
-            localizer={localizer}
-            onEventDrop={onEventDrop}
-            // onEventResize={onEventResize}
-            onSelectEvent={handleSelectEvent}
-            onDoubleClickEvent={(event) => console.log(event)}
-            onSelectSlot={handleSelectSlot}
-            resizable={user?.role !== 'STUDENT'}
-            selectable={user?.role !== 'STUDENT'}
-            draggableAccessor={() => user?.role !== 'STUDENT'}
-            eventPropGetter={(event: any) => ({
-              style: {
-                backgroundColor: event?.resource.color,
-              },
-            })}
-            components={{
-              event: ({ event }: any) => <span>{event.title}</span>,
-            }}
-          />
-        </Paper>
-      </div>
+    <div className={'w-full flex flex-grow flex-col h-full'}>
+      <Paper className="p-2 rounded-lg overflow-y-scroll h-calender scroll-m-1">
+        <DnDCalendar
+          className="h-[1500px]"
+          defaultView="week"
+          events={events}
+          localizer={localizer}
+          onEventDrop={onEventDrop}
+          // onEventResize={onEventResize}
+          onSelectEvent={handleSelectEvent}
+          onDoubleClickEvent={(event) => console.log(event)}
+          onSelectSlot={handleSelectSlot}
+          resizable={user?.role !== 'STUDENT'}
+          selectable={user?.role !== 'STUDENT'}
+          draggableAccessor={() => user?.role !== 'STUDENT'}
+          eventPropGetter={(event: any) => ({
+            style: {
+              backgroundColor: event?.resource.color,
+            },
+          })}
+          components={{
+            event: ({ event }: any) => <span>{event.title}</span>,
+          }}
+        />
+      </Paper>
+
+      {selectedEvent && (
+        <EventDescription
+          data={selectedEvent}
+          handleClose={() => setSelectedEvent(null)}
+          handleOpenForm={handleOpenEventModal}
+        />
+      )}
     </div>
   )
 })

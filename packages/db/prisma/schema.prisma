@@ -20,15 +20,22 @@ model User {
   mobileNumber      String
   password          String
   role              RoleEnum             @default(STUDENT)
+  sex               SexEnum
   balance           Int
   isGraduated       Boolean
   ownedEvents       ScheduleEvent[]      @relation("owners")
   asGuest           UserOnEvents[]
   teacherConnection TechaersToStudents[] @relation(name: "teacherConnection")
   studentConnection TechaersToStudents[] @relation(name: "studentConnection")
-
   /// socials 
-  telegram String?
+  telegram          String?
+  instagram         String?
+  viber             String?
+  facebook          String?
+  whatsapp          String?
+  tiktok            String?
+
+  motivation String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -73,4 +80,9 @@ enum RoleEnum {
   STUDENT
   TUTOR
   ADMIN
+}
+
+enum SexEnum {
+  MALE
+  FEMALE
 }

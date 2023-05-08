@@ -7,18 +7,19 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
+  // UseGuards,
 } from '@nestjs/common'
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
+// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { PaginateQuery } from '../types/paginateQuery'
 
 import { CreateUserDto } from './dto/create-user.dto'
+import { UpdatePasswordDto } from './dto/update-password.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UsersService } from './users.service'
 
 @Controller('users')
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -54,5 +55,15 @@ export class UsersController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.usersService.remove(id)
+  }
+
+  // update password
+  @Patch(':id/password')
+  async updatePassword(
+    @Param('id') id: string,
+    @Body() updatePasswordDto: UpdatePasswordDto,
+  ) {
+    const res = await this.usersService.updatePassword(id, updatePasswordDto)
+    return this.usersService.createUserResponse(res)
   }
 }

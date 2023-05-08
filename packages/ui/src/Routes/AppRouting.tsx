@@ -3,7 +3,11 @@ import { ProtectedRouting } from './ProtectedRouting'
 import { useAppRouting } from './useAppRouting'
 
 export const AppRouting = () => {
-  const user = useAppRouting()
+  const { isAuth, isLoading } = useAppRouting()
 
-  return user ? <ProtectedRouting /> : <UnAuthRoutes />
+  if (isLoading) {
+    return <div>loading...</div>
+  }
+
+  return isAuth ? <ProtectedRouting /> : <UnAuthRoutes />
 }

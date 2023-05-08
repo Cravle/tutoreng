@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
+import type { EventCreateDto } from '@tutoreng/shared/src'
 
-import { postEvents } from '../../../api/events'
+import { postEvents, updateEvent } from '../../../api/events'
 import { queryClient } from '../../../api/queryClient'
 
 export const usePostEvent = () => {
@@ -10,5 +11,18 @@ export const usePostEvent = () => {
       queryClient.invalidateQueries(['getEvents'])
     },
   })
+  return { mutate, status, error }
+}
+
+export const useUpdateEvent = (id?: string) => {
+  const { mutate, status, error } = useMutation(
+    (data: Partial<EventCreateDto>) => updateEvent(data, id),
+    {
+      mutationKey: ['updateEvent'],
+      onSuccess: () => {
+        queryClient.invalidateQueries(['getEvents'])
+      },
+    },
+  )
   return { mutate, status, error }
 }

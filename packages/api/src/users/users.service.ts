@@ -7,13 +7,14 @@ import {
 } from '@nestjs/common'
 
 import type { User } from '@tutoreng/db'
-import { hash } from 'bcrypt'
+import { compare, hash } from 'bcrypt'
 
 import { PaginationResult } from '../prisma/pagination'
 import { PaginationService } from '../prisma/pagintaion.service'
 import { PrismaService } from '../prisma/prisma.service'
 
 import { CreateUserDto } from './dto/create-user.dto'
+import { UpdatePasswordDto } from './dto/update-password.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 
 @Injectable()
@@ -85,6 +86,16 @@ export class UsersService {
     return this.paginationService.paginate(users, count, page, limit, search)
   }
 
+  async findAllByIds(ids: string[]) {
+    return this.prisma.user.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    })
+  }
+
   async findByEmail(email: string) {
     const user = await this.prisma.user.findUnique({ where: { email } })
     if (!user) {
@@ -108,6 +119,7 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
+    console.log(id, updateUserDto, 'id, updateUserDto')
     const user = await this.prisma.user.update({
       where: { id },
       data: updateUserDto,
@@ -155,5 +167,30 @@ export class UsersService {
     const withoutPassword = user
     delete withoutPassword.password
     return withoutPassword
+  }
+
+  async updatePassword(id: string, updatePasswordDto: UpdatePasswordDto) {
+    const user = await this.prisma.user.findUnique({ where: { id } })
+    console.log(user, 'user')
+    console.log(updatePasswordDto, 'updatePasswordDto')
+
+    const isValidPassword = await compare(
+      updatePasswordDto.oldPassword,
+      user.password,
+    )
+
+    if (!isValidPassword) {
+      throw new HttpException(
+        'Old password is not valid',
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    const newPassword = await hash(updatePasswordDto.newPassword, 10)
+
+    return this.prisma.user.update({
+      where: { id },
+      data: { password: newPassword },
+    })
   }
 }
