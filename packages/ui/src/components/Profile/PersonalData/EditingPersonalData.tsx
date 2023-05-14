@@ -4,6 +4,7 @@ import { Controller } from 'react-hook-form'
 
 import { Button } from '@mui/material'
 import { SexEnum } from '@tutoreng/db'
+import type { UserResponseType } from '@tutoreng/shared/src'
 import { MuiTelInput } from 'mui-tel-input'
 
 import BigAvatarPlaceHolder from '../../../assets/BigAvatarPlaceHolder.png'
@@ -14,8 +15,14 @@ import Small from '../../Typography/Small'
 
 import { usePersonalData } from './usePersonalData'
 
-export default memo(function EditingPersonalData() {
-  const { control, handleSubmit, onSubmit } = usePersonalData()
+type PersonalDataProps = {
+  pageOwner?: UserResponseType
+}
+
+export default memo(function EditingPersonalData({
+  pageOwner,
+}: PersonalDataProps) {
+  const { control, handleSubmit, onSubmit } = usePersonalData(pageOwner)
   return (
     <div className="w-full">
       <div className=" w-full flex items-center justify-center">

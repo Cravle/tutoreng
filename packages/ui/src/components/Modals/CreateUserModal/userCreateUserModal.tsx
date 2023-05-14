@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 
 import { yupResolver } from '@hookform/resolvers/yup'
-import { RoleEnum } from '@tutoreng/db'
+import { RoleEnum, SexEnum } from '@tutoreng/db'
 import type { UserCreateDto } from '@tutoreng/shared/src/user'
 import * as yup from 'yup'
 
@@ -14,6 +14,7 @@ const schema = yup.object({
   nickname: yup.string().optional(),
   mobileNumber: yup.string().optional(),
   telegram: yup.string().required(),
+  sex: yup.mixed().oneOf(Object.keys(SexEnum)),
   // role: yup.mixed().oneOf(Object.keys(RoleEnum)),
 })
 
@@ -21,6 +22,7 @@ type FormData = yup.InferType<typeof schema>
 
 type FullFormData = FormData & {
   role: RoleEnum
+  sex: SexEnum
 }
 
 type UseCreateUserModal = {
@@ -38,6 +40,7 @@ export const useCreateUserModal = ({ handleClose }: UseCreateUserModal) => {
       mobileNumber: '',
       telegram: '',
       role: RoleEnum.STUDENT,
+      sex: SexEnum.MALE,
     },
   })
   const { mutate } = createNewUserModalService()

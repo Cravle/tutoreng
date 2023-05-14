@@ -23,11 +23,18 @@ export default memo(function ChoseButton({
 })
 
 const Root = styled.div<{ active?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   cursor: pointer;
   padding: 11px 12px;
   border-radius: 7px;
-  border: 1px solid
-    ${({ active }) => (active ? COLORS.button : COLORS.menuFont)};
+  border: 1px solid;
+  min-width: 40px;
+  min-height: 40px;
+
+  ${({ active }) => (active ? COLORS.button : COLORS.menuFont)};
 
   color: ${({ active }) => (active ? COLORS.button : COLORS.menuFont)};
   background-color: ${({ active }) =>

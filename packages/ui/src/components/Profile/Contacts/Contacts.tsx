@@ -1,13 +1,20 @@
 import { memo } from 'react'
 
+import type { UserResponseType } from '@tutoreng/shared/src'
+
 import { COLORS } from '../../../constatnts/colors'
 import useUserStore from '../../../stores/user.store'
 import Medium from '../../Typography/Medium'
 import Small from '../../Typography/Small'
 import { SOCIAL_LINKS } from '../constants'
 
-export default memo(function Contacts() {
-  const user = useUserStore((state) => state.user)
+type ContactsProps = {
+  pageOwner?: UserResponseType
+}
+
+export default memo(function Contacts({ pageOwner }: ContactsProps) {
+  const currentUser = useUserStore((state) => state.user)
+  const user = pageOwner || currentUser
   return (
     <div className="grid grid-cols-2 gap-4 w-full">
       {Object.entries(SOCIAL_LINKS).map(([key, value]) => {

@@ -10,6 +10,8 @@ import {
   // UseGuards,
 } from '@nestjs/common'
 
+import { RoleEnum } from '@tutoreng/db'
+
 // import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { PaginateQuery } from '../types/paginateQuery'
 
@@ -64,6 +66,12 @@ export class UsersController {
     @Body() updatePasswordDto: UpdatePasswordDto,
   ) {
     const res = await this.usersService.updatePassword(id, updatePasswordDto)
+    return this.usersService.createUserResponse(res)
+  }
+
+  @Get('/role/:role')
+  async findAllByRole(@Param('role') role: RoleEnum) {
+    const res = await this.usersService.findAllByRole(role)
     return this.usersService.createUserResponse(res)
   }
 }

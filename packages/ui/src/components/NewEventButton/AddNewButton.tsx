@@ -7,15 +7,19 @@ import Medium from '../Typography/Medium'
 type AddNewButtonProps = {
   onClick?: () => void
   title: string
+  disabled?: boolean
 }
 
 export default memo(function AddNewButton({
   onClick,
   title,
+  disabled,
 }: AddNewButtonProps) {
   return (
     <div
-      className="bg-white px-7 py-4_5 rounded-25px shadow-default border border-mainBorder cursor-pointer w-full"
+      className={`bg-white px-7 py-4_5 rounded-25px shadow-default border border-mainBorder cursor-pointer w-full ${
+        disabled ? 'opacity-50 pointer-events-none' : ''
+      }`}
       onClick={onClick}
     >
       <div className="flex flex-row items-center">

@@ -47,6 +47,7 @@ export default memo(function CreateEventModal({
     control,
     handleClickOutside,
     students,
+    potentioalOwners,
   } = useCreateEvent({ handleClose })
   console.log(event, 'event 41')
   return (
@@ -63,7 +64,11 @@ export default memo(function CreateEventModal({
         },
       }}
     >
-      <div className="w-480 h-[520px] mx-auto my-auto ">
+      <div
+        className={`w-480 ${
+          potentioalOwners ? 'h-[620px]' : 'h-[520px]'
+        }  mx-auto my-auto `}
+      >
         <div className="h-full bg-white rounded-25px">
           {/* header */}
           <div className={'p-4 border-b border-solid border-mainBorder'}>
@@ -116,6 +121,42 @@ export default memo(function CreateEventModal({
                 }}
               />
 
+              {potentioalOwners && (
+                <div className="mt-5">
+                  <div className="mb-2">
+                    <Small color={COLORS.menuFont}>Обрати вчителя</Small>
+                  </div>
+                  <Controller
+                    name="owner"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field }) => {
+                      return (
+                        <FormControl className="w-full">
+                          <StyledSelect
+                            labelId="selectStudent"
+                            value={field.value}
+                            onChange={field.onChange}
+                          >
+                            <DefaultMenutItem value="default" disabled>
+                              Обрати вчителя
+                            </DefaultMenutItem>
+
+                            {potentioalOwners?.map((owner) => {
+                              return (
+                                <MenuItem value={owner.id}>
+                                  {owner.name} {owner.surname}
+                                </MenuItem>
+                              )
+                            })}
+                          </StyledSelect>
+                        </FormControl>
+                      )
+                    }}
+                  />
+                </div>
+              )}
+
               {/* Student name */}
               <div className="mt-5">
                 <div className="mb-2">
@@ -126,7 +167,6 @@ export default memo(function CreateEventModal({
                   control={control}
                   rules={{ required: true }}
                   render={({ field }) => {
-                    console.log(field, ' field')
                     return (
                       <FormControl className="w-full">
                         <StyledSelect

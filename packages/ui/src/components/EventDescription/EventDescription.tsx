@@ -6,12 +6,14 @@ import styled from '@emotion/styled'
 import { Modal } from '@mui/material'
 
 import { COLORS } from '../../constatnts/colors'
-import useEventStore from '../../stores/events.store'
 import CloseModal from '../Icons/CloseModal'
 import EditIcon from '../Icons/EditIcon'
+import RemoveIcon from '../Icons/RemoveIcon'
 import Medium from '../Typography/Medium'
 import Small from '../Typography/Small'
 import Title from '../Typography/Title'
+
+import { useEventDescription } from './useEventDescription'
 
 type EventDescriptionProps = {
   data: {
@@ -28,45 +30,11 @@ export default memo(function EventDescription({
   handleClose,
   handleOpenForm,
 }: EventDescriptionProps) {
-  console.log(data, 'data2')
-  const setSelectedEvent = useEventStore((store) => store.setSelectedEvent)
-
-  // const ref = useRef<HTMLDivElement>(null)
-
-  // const handleClickOutside = (event: any) => {
-  //   console.log(event, 'event')
-  //   const dialogDimensions = ref.current.getBoundingClientRect()
-
-  //   console.log(event.target, 'click event')
-  //   console.log('clickOutside')
-  //   if (
-  //     event.clientX < dialogDimensions.left ||
-  //     event.clientX > dialogDimensions.right ||
-  //     event.clientY < dialogDimensions.top ||
-  //     event.clientY > dialogDimensions.bottom
-  //   ) {
-  //     console.log('close')
-  //     handleClose()
-  //   }
-  //   event.preventDefault()
-  //   event.stopPropagation()
-  //   event.nativeEvent.stopImmediatePropagation()
-  // }
-
-  // useEvent('click', handleClickOutside, document)
-
-  // useEffect(() => {
-  //   document.addEventListener('click', handleClickOutside)
-  //   return () => {
-  //     document.removeEventListener('click', handleClickOutside)
-  //   }
-  // }, [])
-
-  const handleEdit = () => {
-    setSelectedEvent(data.event.resource)
-    handleOpenForm()
-    handleClose()
-  }
+  const { handleEdit, removeEvent, currentUser } = useEventDescription({
+    handleClose,
+    handleOpenForm,
+    data,
+  })
 
   return (
     <Modal
@@ -96,9 +64,17 @@ export default memo(function EventDescription({
           <Title>{data.event.resource.title}</Title>
 
           <div className="flex flex-row gap-3 items-center">
-            <div className="cursor-pointer" onClick={handleEdit}>
-              <EditIcon />
-            </div>
+            {currentUser.role !== 'STUDENT' && (
+              <>
+                <div className="cursor-pointer" onClick={() => removeEvent()}>
+                  <RemoveIcon />
+                </div>
+                <div className="cursor-pointer" onClick={handleEdit}>
+                  <EditIcon />
+                </div>
+              </>
+            )}
+
             <div onClick={handleClose} className="cursor-pointer">
               <CloseModal />
             </div>

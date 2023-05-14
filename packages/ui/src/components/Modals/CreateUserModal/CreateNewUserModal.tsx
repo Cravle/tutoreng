@@ -3,9 +3,11 @@ import { memo } from 'react'
 import { Controller } from 'react-hook-form'
 
 import { Button, Modal } from '@mui/material'
+import { SexEnum } from '@tutoreng/db'
 import { MuiTelInput } from 'mui-tel-input'
 
 import { COLORS } from '../../../constatnts/colors'
+import ChoseButton from '../../ChoseButton/ChoseButton'
 import { StyledInput } from '../../FormComponents/StyledInput/StyledInput'
 import StyledSelect from '../../FormComponents/StyledSelect/StyledSelect'
 import CloseModal from '../../Icons/CloseModal'
@@ -36,7 +38,7 @@ export default memo(function CreateNewUserModal({
         justifyContent: 'center',
       }}
     >
-      <div className="w-480 h-[700px] mx-auto my-auto ">
+      <div className="w-480 h-[780px] mx-auto my-auto ">
         <div className="h-full bg-white rounded-25px">
           {/* header */}
           <div className={'p-4 border-b border-solid border-mainBorder'}>
@@ -114,6 +116,36 @@ export default memo(function CreateNewUserModal({
                   )
                 }}
               />
+
+              <div className="mt-4 mb-2">
+                <Small color={COLORS.menuFont} fontWeight="500">
+                  Стать
+                </Small>
+              </div>
+              <div className="gap-3 flex flex-row">
+                <Controller
+                  name="sex"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => {
+                    console.log(field, 'field')
+                    return (
+                      <>
+                        <ChoseButton
+                          title="Ч"
+                          active={field.value === SexEnum.MALE}
+                          onClick={() => field.onChange(SexEnum.MALE)}
+                        />
+                        <ChoseButton
+                          title="Ж"
+                          active={field.value === SexEnum.FEMALE}
+                          onClick={() => field.onChange(SexEnum.FEMALE)}
+                        />
+                      </>
+                    )
+                  }}
+                />
+              </div>
 
               {/* email */}
               <div className="mt-4 mb-2">

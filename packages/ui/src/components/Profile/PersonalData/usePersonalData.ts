@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { SexEnum } from '@tutoreng/db'
+import type { UserResponseType } from '@tutoreng/shared'
 import * as yup from 'yup'
 
 import { queryClient } from '../../../api/queryClient'
@@ -23,19 +24,23 @@ const schema = yup.object({
 
 type FormData = yup.InferType<typeof schema>
 
-export const usePersonalData = () => {
+export const usePersonalData = (pageOwner?: UserResponseType) => {
   const { setIsEditing } = useProfilePageStore((store) => store)
   const enqueueNotification = useNotificationStore(
     (state) => state.enqueueNotification,
   )
 
-  const user = useUserStore((state) => state.user)
+  const currentUser = useUserStore((state) => state.user)
   const setUser = useUserStore((state) => state.setUser)
+
+  const user = pageOwner || currentUser
+
   const navigate = useCustomNavigate()
 
   const { mutate } = useMutation((data: FormData) => patchUser(data, user.id), {
     onSuccess: () => {
       enqueueNotification('Персональна інформація обновлена', 'success')
+      queryClient.invalidateQueries(['user', user.id])
       queryClient.invalidateQueries(['initialUser'])
     },
   })

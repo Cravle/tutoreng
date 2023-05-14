@@ -4,17 +4,19 @@ import { useForm } from 'react-hook-form'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useQuery } from '@tanstack/react-query'
+import { RoleEnum } from '@tutoreng/db'
 import type { EventCreateDto } from '@tutoreng/shared/src'
 import dayjs from 'dayjs'
 import * as yup from 'yup'
 
-import { fetchUsers } from '../../../api/user'
+import { fetchUsers, getStudents } from '../../../api/user'
 import { PRODUCTS } from '../../../constatnts/products'
 import useEventStore from '../../../stores/events.store'
 
 import { usePostEvent, useUpdateEvent } from './createEventModal.service'
 const schema = yup.object({
   title: yup.string().required(),
+  owner: yup.string().optional(),
   student: yup.string().required(),
   // product: yup.string().required(),
   callUrl: yup.string().url(),
@@ -30,10 +32,13 @@ type UseCreateEvent = {
   handleClose: () => void
 }
 export const useCreateEvent = ({ handleClose }: UseCreateEvent) => {
-  const { data: studentsData } = useQuery(['students'], () =>
-    fetchUsers('student'),
-  )
+  const ownerId = useEventStore((store) => store.ownerId)
   const selectedEvent = useEventStore((store) => store.selectedEvent)
+  const setOwnerId = useEventStore((store) => store.setOwnerId)
+
+  const { data: studentsData } = useQuery(['students'], () => getStudents())
+  const { data: users } = useQuery(['owners'], () => ownerId && fetchUsers())
+  console.log(studentsData, 'studentsData')
 
   const { mutate: addEvent } = usePostEvent()
   const { mutate: updateEvent } = useUpdateEvent(selectedEvent?.id)
@@ -60,9 +65,10 @@ export const useCreateEvent = ({ handleClose }: UseCreateEvent) => {
       ? {
           title: selectedEvent.title,
           student:
-            studentsData?.data.find(
+            studentsData?.find(
               (student) => student.id === selectedEvent.guests[0].id,
             ) || '',
+          owner: selectedEvent.owner.id,
           // product: PRODUCTS[0],
           date: dayjs(selectedEvent.dateFrom),
           startTime: dayjs(selectedEvent.dateFrom).format('HH:mm'),
@@ -88,7 +94,7 @@ export const useCreateEvent = ({ handleClose }: UseCreateEvent) => {
       console.log(selectedEvent, ' 111 selectedEvent')
       setValue(
         'student',
-        studentsData.data.find(
+        studentsData.find(
           (student) => student.id === selectedEvent.guests[0].user.id,
         )?.id,
       )
@@ -139,9 +145,12 @@ export const useCreateEvent = ({ handleClose }: UseCreateEvent) => {
     if (selectedEvent) {
       updateEvent(dataToSend)
       setSelectedDate(null)
+      setSelectedEvent(null)
       return
     }
     addEvent(dataToSend)
+    setSelectedEvent(null)
+
     setSelectedDate(null)
   }
 
@@ -150,6 +159,19 @@ export const useCreateEvent = ({ handleClose }: UseCreateEvent) => {
   const handleSelectProduct = (product: string) => {
     setSelectedProduct(product)
   }
+
+  const potentioalOwners = users?.data?.filter(
+    (user) => user.role !== RoleEnum.STUDENT,
+  )
+
+  useEffect(() => {
+    return () => {
+      setSelectedDate(null)
+      setSelectedEvent(null)
+      setOwnerId(null)
+    }
+  }, [])
+
   return {
     selectedProduct,
     handleSelectProduct,
@@ -161,6 +183,7 @@ export const useCreateEvent = ({ handleClose }: UseCreateEvent) => {
     handleSubmit,
     onSubmit,
     handleClickOutside,
-    students: studentsData?.data,
+    students: studentsData,
+    potentioalOwners,
   }
 }

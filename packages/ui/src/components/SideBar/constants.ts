@@ -4,7 +4,6 @@ import { RoleEnum } from '@tutoreng/db'
 
 import { ROUTE_TYPES, ROUTES } from '../../Routes/routes'
 import BalanceIcon from '../Icons/BalanceIcon'
-import CalendarIcon from '../Icons/CalendarIcon'
 import HomeIcon from '../Icons/HomeIcon'
 import SettingsIcon from '../Icons/SettingsIcon'
 import UsercIcon from '../Icons/UsercIcon'
@@ -24,13 +23,9 @@ export const SIDEBAR_ITEMS: SideItem[] = [
   {
     Icon: BalanceIcon,
     title: 'Баланс',
-    path: ROUTES.BALANCE,
+    path: ROUTES.PAYMENTS,
   },
-  {
-    Icon: CalendarIcon,
-    title: 'Календар',
-    path: ROUTES.CALENDAR,
-  },
+
   {
     Icon: SettingsIcon,
     title: 'Налаштування',
@@ -45,19 +40,9 @@ export const SIDEBAR_ADMIN_ITEMS: SideItem[] = [
     path: ROUTES.HOME,
   },
   {
-    Icon: BalanceIcon,
-    title: 'Баланс',
-    path: ROUTES.BALANCE,
-  },
-  {
     Icon: UsercIcon,
     title: 'Користувачі',
     path: ROUTES.USERS,
-  },
-  {
-    Icon: CalendarIcon,
-    title: 'Календар',
-    path: ROUTES.CALENDAR,
   },
   {
     Icon: SettingsIcon,
@@ -73,19 +58,9 @@ export const SIDEBAR_TUTOR_ITEMS: SideItem[] = [
     path: ROUTES.HOME,
   },
   {
-    Icon: BalanceIcon,
-    title: 'Баланс',
-    path: ROUTES.BALANCE,
-  },
-  {
     Icon: UsercIcon,
     title: 'Користувачі',
     path: ROUTES.USERS,
-  },
-  {
-    Icon: CalendarIcon,
-    title: 'Календар',
-    path: ROUTES.CALENDAR,
   },
   {
     Icon: SettingsIcon,

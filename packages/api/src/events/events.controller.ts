@@ -39,9 +39,9 @@ export class EventsController {
     return this.eventsService.findAll()
   }
 
-  @Get('byUser')
-  async findAllByUser(@Req() request: RequestWithUser) {
-    return this.eventsService.findAllByUser(request.user)
+  @Get('byUser/:userId')
+  async findAllByUser(@Param('userId') userId: string) {
+    return this.eventsService.findAllByUser(userId)
   }
 
   @Get(':id')

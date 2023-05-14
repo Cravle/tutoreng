@@ -1,5 +1,6 @@
 import { memo } from 'react'
 
+import type { UserResponseType } from '@tutoreng/shared/src'
 import { MuiTelInput } from 'mui-tel-input'
 
 import BigAvatarPlaceHolder from '../../../assets/BigAvatarPlaceHolder.png'
@@ -8,8 +9,13 @@ import useUserStore from '../../../stores/user.store'
 import ChoseButton from '../../ChoseButton/ChoseButton'
 import Small from '../../Typography/Small'
 
-export default memo(function PersonalData() {
-  const user = useUserStore((state) => state.user)
+type PersonalDataProps = {
+  pageOwner?: UserResponseType
+}
+
+export default memo(function PersonalData({ pageOwner }: PersonalDataProps) {
+  const currentUser = useUserStore((state) => state.user)
+  const user = pageOwner || currentUser
   return (
     <div className="w-full">
       <div className=" w-full flex items-center justify-center">

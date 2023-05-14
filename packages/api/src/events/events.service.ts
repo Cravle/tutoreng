@@ -55,17 +55,17 @@ export class EventsService {
     })
   }
 
-  async findAllByUser(user: User) {
+  async findAllByUser(userId: string) {
     const res = await this.prisma.scheduleEvent.findMany({
       where: {
         OR: [
           {
-            ownerId: user.id,
+            ownerId: userId,
           },
           {
             guests: {
               some: {
-                userId: user.id,
+                userId: userId,
               },
             },
           },

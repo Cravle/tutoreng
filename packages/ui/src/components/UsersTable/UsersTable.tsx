@@ -11,13 +11,17 @@ import {
 import TableContainer from '@mui/material/TableContainer'
 import type { UserResponseType } from '@tutoreng/shared/src'
 
+import { COLORS } from '../../constatnts/colors'
+import Small from '../Typography/Small'
+
+import { useUserTable } from './useUserTable'
+
 type UsersTableProps = {
   users: UserResponseType[]
 }
 
 export default memo(function UsersTable({ users }: UsersTableProps) {
-  console.log(users, 'users table')
-
+  const { handleGoToSchedule, handleGoToProfile } = useUserTable()
   if (!users) return null
 
   return (
@@ -26,11 +30,13 @@ export default memo(function UsersTable({ users }: UsersTableProps) {
         <Table sx={{ minWidth: '100%' }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Имʼя</TableCell>
+              <TableCell>Імʼя</TableCell>
               <TableCell align="right">Роль</TableCell>
               <TableCell align="right">Email</TableCell>
               <TableCell align="right">Номер телефону</TableCell>
               <TableCell align="right">Telegram</TableCell>
+              <TableCell align="right">Розклад</TableCell>
+              <TableCell align="right">Профіль</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -46,6 +52,22 @@ export default memo(function UsersTable({ users }: UsersTableProps) {
                 <TableCell align="right">{row.email}</TableCell>
                 <TableCell align="right">{row.mobileNumber}</TableCell>
                 <TableCell align="right">{row.telegram}</TableCell>
+                <TableCell align="right">
+                  <div
+                    onClick={() => handleGoToSchedule(row.id)}
+                    className="cursor-pointer"
+                  >
+                    <Small color={COLORS.button}>до розкладу</Small>
+                  </div>
+                </TableCell>
+                <TableCell align="right">
+                  <div
+                    onClick={() => handleGoToProfile(row.id)}
+                    className="cursor-pointer"
+                  >
+                    <Small color={COLORS.button}>до профілю</Small>
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

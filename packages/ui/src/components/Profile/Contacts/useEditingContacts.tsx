@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
+import type { UserResponseType } from '@tutoreng/shared/src'
 import * as yup from 'yup'
 
 import { queryClient } from '../../../api/queryClient'
@@ -21,8 +22,9 @@ const schema = yup.object({
 
 type FormData = yup.InferType<typeof schema>
 
-export const useEditingContact = () => {
-  const user = useUserStore((state) => state.user)
+export const useEditingContact = (pageOwner?: UserResponseType) => {
+  const currentUser = useUserStore((state) => state.user)
+  const user = pageOwner || currentUser
   const enqueueNotification = useNotificationStore(
     (state) => state.enqueueNotification,
   )
@@ -30,6 +32,7 @@ export const useEditingContact = () => {
   const { mutate } = useMutation((data: FormData) => patchUser(data, user.id), {
     onSuccess: () => {
       enqueueNotification('Контакты успешно обновлены', 'success')
+      queryClient.invalidateQueries(['user', user.id])
       queryClient.invalidateQueries(['initialUser'])
     },
   })

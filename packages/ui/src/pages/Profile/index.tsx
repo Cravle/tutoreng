@@ -13,8 +13,12 @@ import PersonalData from '../../components/Profile/PersonalData/PersonalData'
 import Heading from '../../components/Typography/Heading'
 import useProfilePageStore from '../../stores/profilePage.store'
 
+import { useProfile } from './useProfile'
+
 export default memo(function ProfilePage() {
   const { isEditing, setIsEditing } = useProfilePageStore((store) => store)
+  const { pageOwnerData } = useProfile()
+  console.log(pageOwnerData, 'pageOwner')
   return (
     <div className="h-full flex flex-row p-7 w-full">
       <div className="h-full w-1/3 mr-7 flex flex-col">
@@ -22,7 +26,11 @@ export default memo(function ProfilePage() {
           <Heading>Особисті дані</Heading>
         </div>
         <div className="flex w-full flex-grow bg-white border border-mainBorder rounded-25px p-7">
-          {isEditing ? <EditingPersonalData /> : <PersonalData />}
+          {isEditing ? (
+            <EditingPersonalData pageOwner={pageOwnerData} />
+          ) : (
+            <PersonalData pageOwner={pageOwnerData} />
+          )}
         </div>
       </div>
       <div className="w-2/3 h-full box-border">
@@ -31,7 +39,11 @@ export default memo(function ProfilePage() {
             <Heading>Контакти</Heading>
           </div>
           <div className="flex w-full flex-grow bg-white border border-mainBorder rounded-25px p-7">
-            {isEditing ? <EditingContacts /> : <Contacts />}
+            {isEditing ? (
+              <EditingContacts pageOwner={pageOwnerData} />
+            ) : (
+              <Contacts pageOwner={pageOwnerData} />
+            )}
           </div>
         </div>
         <div className="h-1/2 flex flex-col">
@@ -40,16 +52,22 @@ export default memo(function ProfilePage() {
               <div className="mb-5 mt-7">
                 <Heading>Мета вивчення</Heading>
               </div>
-              {isEditing ? <EditingMotivation /> : <Motivation />}
+              {isEditing ? (
+                <EditingMotivation pageOwner={pageOwnerData} />
+              ) : (
+                <Motivation pageOwner={pageOwnerData} />
+              )}
             </div>
-            <div className="pb-3 flex flex-grow flex-col w-1/2">
-              <div className="mb-5 mt-7">
-                <Heading>Безпека</Heading>
+            {!pageOwnerData && (
+              <div className="pb-3 flex flex-grow flex-col w-1/2">
+                <div className="mb-5 mt-7">
+                  <Heading>Безпека</Heading>
+                </div>
+                <div className="flex w-full flex-col flex-grow bg-white border border-mainBorder rounded-25px p-7">
+                  {isEditing ? <EditingPasswords /> : <Passwords />}
+                </div>
               </div>
-              <div className="flex w-full flex-col flex-grow bg-white border border-mainBorder rounded-25px p-7">
-                {isEditing ? <EditingPasswords /> : <Passwords />}
-              </div>
-            </div>
+            )}
           </div>
 
           <div className="flex items-center justify-center w-full ">

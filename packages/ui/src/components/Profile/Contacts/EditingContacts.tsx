@@ -3,6 +3,7 @@ import { memo } from 'react'
 import { Controller } from 'react-hook-form'
 
 import { Button } from '@mui/material'
+import type { UserResponseType } from '@tutoreng/shared/src'
 
 import { COLORS } from '../../../constatnts/colors'
 import { StyledInput } from '../../FormComponents/StyledInput/StyledInput'
@@ -11,8 +12,14 @@ import { SOCIAL_LINKS } from '../constants'
 
 import { useEditingContact } from './useEditingContacts'
 
-export default memo(function EditingContacts() {
-  const { control, handleSubmit, onSubmit } = useEditingContact()
+type EditingContactsProps = {
+  pageOwner?: UserResponseType
+}
+
+export default memo(function EditingContacts({
+  pageOwner,
+}: EditingContactsProps) {
+  const { control, handleSubmit, onSubmit } = useEditingContact(pageOwner)
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full h-full">
       <div className="grid grid-cols-2 gap-4 w-full">

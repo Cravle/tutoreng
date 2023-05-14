@@ -6,6 +6,7 @@ import withDragAndDrop, {
 } from 'react-big-calendar/lib/addons/dragAndDrop'
 
 import { Paper } from '@mui/material'
+import type { UserResponseType } from '@tutoreng/shared/src'
 import format from 'date-fns/format'
 import getDay from 'date-fns/getDay'
 import enUS from 'date-fns/locale/en-US'
@@ -23,18 +24,20 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 
 type TimeTableprops = {
   handleOpenEventModal: () => void
+  owner?: UserResponseType
 }
 
 export default memo(function TimeTable({
   handleOpenEventModal,
+  owner,
 }: TimeTableprops) {
   const [selectedEvent, setSelectedEvent] = useState<{
     x: number
     y: number
     event: Event
   }>(null)
-  const { dataEvents } = useTimeTable()
-  const user = useUserStore((store) => store.user)
+  const { dataEvents } = useTimeTable(owner?.id)
+  const currentUser = useUserStore((store) => store.user)
   const setSelectedDate = useEventStore((store) => store.setSelectedDate)
 
   const events = dataEvents
@@ -105,16 +108,26 @@ export default memo(function TimeTable({
           onSelectEvent={handleSelectEvent}
           onDoubleClickEvent={(event) => console.log(event)}
           onSelectSlot={handleSelectSlot}
-          resizable={user?.role !== 'STUDENT'}
-          selectable={user?.role !== 'STUDENT'}
-          draggableAccessor={() => user?.role !== 'STUDENT'}
+          resizable={currentUser?.role !== 'STUDENT'}
+          selectable={currentUser?.role !== 'STUDENT'}
+          draggableAccessor={() => currentUser?.role !== 'STUDENT'}
           eventPropGetter={(event: any) => ({
             style: {
               backgroundColor: event?.resource.color,
             },
           })}
           components={{
-            event: ({ event }: any) => <span>{event.title}</span>,
+            event: ({ event }: any) => (
+              <>
+                <span>{event.title}</span>
+                <div>
+                  <span>
+                    {event.resource?.guests[0].user.name}{' '}
+                    {event.resource?.guests[0].user.surname}
+                  </span>
+                </div>
+              </>
+            ),
           }}
         />
       </Paper>

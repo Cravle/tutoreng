@@ -1,14 +1,19 @@
 import { memo } from 'react'
 
 import { Button, TextField } from '@mui/material'
+import type { UserResponseType } from '@tutoreng/shared/src'
 
 import { COLORS } from '../../../constatnts/colors'
 import Small from '../../Typography/Small'
 
 import { useEditingMotivation } from './useEditingMotivation'
 
-export default memo(function EditingMotivation() {
-  const { handleSubmit, onSubmit, register } = useEditingMotivation()
+export default memo(function EditingMotivation({
+  pageOwner,
+}: {
+  pageOwner?: UserResponseType
+}) {
+  const { handleSubmit, onSubmit, register } = useEditingMotivation(pageOwner)
   return (
     <div className="flex w-full flex-col flex-grow bg-white border border-mainBorder rounded-25px p-7">
       <Small color={COLORS.menuFont}>

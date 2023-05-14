@@ -1,5 +1,7 @@
+import { memo } from 'react'
+
 import BaseSchedule from '../../components/Home/BaseSchedule'
 
-export const HomePage = () => {
+export default memo(function Scheduling() {
   return <BaseSchedule />
-}
+})

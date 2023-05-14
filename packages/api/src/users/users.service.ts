@@ -6,7 +6,7 @@ import {
   Logger,
 } from '@nestjs/common'
 
-import type { User } from '@tutoreng/db'
+import type { RoleEnum, User } from '@tutoreng/db'
 import { compare, hash } from 'bcrypt'
 
 import { PaginationResult } from '../prisma/pagination'
@@ -191,6 +191,14 @@ export class UsersService {
     return this.prisma.user.update({
       where: { id },
       data: { password: newPassword },
+    })
+  }
+
+  async findAllByRole(role: RoleEnum) {
+    return this.prisma.user.findMany({
+      where: {
+        role,
+      },
     })
   }
 }

@@ -1,3 +1,4 @@
+import { RoleEnum } from '@tutoreng/db'
 import type { UserCreateDto, UserResponseType } from '@tutoreng/shared/src'
 
 import { apiClient } from './client'
@@ -20,6 +21,14 @@ export const fetchUsers = async (search?: string) => {
 
 export const postUser = async (data: UserCreateDto) => {
   const res = await apiClient.post<UserResponseType>('/users', data)
+
+  return res.data
+}
+
+export const getStudents = async () => {
+  const res = await apiClient.get<UserResponseType[]>(
+    `/users/role/${RoleEnum.STUDENT}`,
+  )
 
   return res.data
 }
